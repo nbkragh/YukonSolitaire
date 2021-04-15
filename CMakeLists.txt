@@ -4,4 +4,6 @@ project(YukonSolitaire C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(YukonSolitaire
-        Solitare.c)
+        Solitare.c
+        CardLoad.c
+        CardFunctions.h)

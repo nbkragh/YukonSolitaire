@@ -3,8 +3,12 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
+#include "CardFunctions.h"
 
 int main(void){
+
+    LoadCards();
 
     for (int i = 1; i <= 7; ++i ){
         printf("C%d \t",i);
@@ -17,7 +21,7 @@ int main(void){
         }
         printf("\n");
     }
-
+    return 0;
 }
 
 
