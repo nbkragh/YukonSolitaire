@@ -6,6 +6,8 @@
 #define YUKONSOLITAIRE_CARDFUNCTIONS_H
 //#include <stdio.h>
 void LoadCards(void);
+void cardFromFile(void);
+void displayGame(void);
 
 
 
