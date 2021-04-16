@@ -9,11 +9,11 @@
 
 int main(){
     element* C[7];
-    card* newCard = malloc(sizeof(card));
+    card* newCard = (card*)malloc(sizeof(card));
 
     element* stack = NULL;
     top(stack);
-    stack = (malloc(sizeof(element)));
+    stack = (element*)(malloc(sizeof(element)));
     cardsFromFile(&stack);
 
     // for(int i = 0; i < 7; i++){

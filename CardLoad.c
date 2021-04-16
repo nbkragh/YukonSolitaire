@@ -71,15 +71,18 @@ void LoadCard(char* input, element** stack){
     //element* root = ( element*) malloc(sizeof ( element));
     //root ->data = *newCard;
     //root ->next = NULL;
-
+    //printf("input: %s", input);
     card* newCard = (card *)malloc(sizeof(card));
     newCard->value = valueFromCardName(input);
     newCard->suit = suitFromCardName(input);
+
     strcpy(newCard->name, input); // kopier string ind i newCard->name
+    //printf("newcard->name: %s \n", newCard->name);
     newCard->shown = 1;
 
     element* newElement = ( element*) malloc(sizeof ( element));
-    (*newElement).data = *newCard;
+    newElement->data = *newCard;
+    //printf("newcard->data.name: %s \n", newElement->data.name);
     newElement->next = NULL;
     //for (int i = 0; i < 10; ++i) {
         push(newElement, stack);
@@ -93,7 +96,7 @@ void LoadCard(char* input, element** stack){
 
 void cardsFromFile( element** stack){
     FILE *fp;
-    char str[MAXCHAR];
+    char str[4];
     char* filename = "..\\Cards.txt";
 
     fp = fopen(filename, "r");
@@ -107,12 +110,13 @@ void cardsFromFile( element** stack){
 
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 12; ++j) {
-            if (fgets(str, MAXCHAR, fp) != NULL){
-                //printf("%s \t", str);
+            if (fgets(str, 4, fp) != NULL){
+                //printf("from file: %s \t", str);
+                str[strlen(str)-1] = '\0';
                 LoadCard(str, stack);
             }
         }
-        printf("\n");
+        //printf("\n");
     }
 
 
