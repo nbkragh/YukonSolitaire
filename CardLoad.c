@@ -6,10 +6,12 @@
 #include <stdlib.h>
 #include "CardFunctions.h"
 #include <string.h>
+#include <mmcobj.h>
+
 #define MAXCHAR 1000
 
 
- element *head = NULL;
+ //element *head = NULL;
  element *current = NULL;
 
 int valueFromCardName(char* name){
@@ -125,4 +127,50 @@ void cardsFromFile( element** stack){
     fclose(fp);
 
 
+}
+/* count how many elements there are in the list, then scan to the halfway point, breaking the last link */
+element* splitAtHalf (element* first){
+    size_t numElems = 0;
+    for (element* curr = (element *) first; curr != NULL ; curr = (element *) first->next) {
+        numElems++;
+    }
+
+    for (size_t i = 0; i < numElems / 2 - 1; ++i) {
+        first = first ->next;
+    }
+
+    element* result = (element *) first->next;
+    first ->next = NULL;
+    return result;
+
+}
+/* iteratively track the first element of one of the lists onto the back of the list being built, then to switch which list is which */
+void interleave(element* first, element* second) {
+    element* tail = NULL;
+    /* Append the first element of 'second' to the list. */
+    while (second != NULL){
+        if (tail == NULL){
+            tail = second;
+        } else {
+            tail ->next = second;
+            tail = second;
+        }
+        /* cut the head of 'second' from 'second' */
+        element* next = second ->next;
+        second ->next = NULL;
+        second = next;
+
+        /* swap the two lists */
+        element* temp = first;
+        first = second;
+        second = first;
+    }
+}
+/* first, split the list in half; second, shuffle the elements together. */
+void shuffleList(element** head){
+    if (* head == NULL) return;
+
+    element* half = (element *) splitAtHalf(*head);
+    interleave(*head, half);
+    *head = half;
 }
