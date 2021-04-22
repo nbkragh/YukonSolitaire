@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include "CardFunctions.h"
 #include <string.h>
+#include <ctype.h>
 #define MAXCHAR 1000
 
 
@@ -13,23 +14,21 @@
  element *current = NULL;
 
 int valueFromCardName(char* name){
-    switch (*name)
+    switch (toupper(*name))
     {
     case 'A':
-    case 'a':
         return 1;
+    case 'T':
+        return 10;
     case 'J':
-    case 'j':
         return 11;
     case 'Q':
-    case 'q':
         return 12;
     case 'K':
-    case 'k':
         return 13;
     default:
         if( 48<(int)*name<58 ){
-            return (int)*name;
+            return ((int)*name)-48;
         }else{
             return -1; // error ! 
         };
@@ -71,27 +70,20 @@ void LoadCard(char* input, element** stack){
     //element* root = ( element*) malloc(sizeof ( element));
     //root ->data = *newCard;
     //root ->next = NULL;
-    //printf("input: %s", input);
     card* newCard = (card *)malloc(sizeof(card));
     newCard->value = valueFromCardName(input);
     newCard->suit = suitFromCardName(input);
-
     strcpy(newCard->name, input); // kopier string ind i newCard->name
-    //printf("newcard->name: %s \n", newCard->name);
     newCard->shown = 1;
 
     element* newElement = ( element*) malloc(sizeof ( element));
     newElement->data = *newCard;
-    //printf("newcard->data.name: %s \n", newElement->data.name);
     newElement->next = NULL;
-    //for (int i = 0; i < 10; ++i) {
-        push(newElement, stack);
-        top(*stack);
-    //}
+    push(newElement, stack);
+    //top(*stack);
+
     free(newCard);
     newCard = NULL;
-    free(newElement);
-    newElement = NULL;
 }
 
 void cardsFromFile( element** stack){
@@ -109,19 +101,14 @@ void cardsFromFile( element** stack){
     }
 
     for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 12; ++j) {
+        for (int j = 0; j < 13; ++j) {
             if (fgets(str, 4, fp) != NULL){
-                //printf("from file: %s \t", str);
                 str[strlen(str)-1] = '\0';
                 LoadCard(str, stack);
             }
         }
-        //printf("\n");
     }
 
-
-//    while (fgets(str, MAXCHAR, fp) != NULL)
-//        printf("%s\n", str);
     fclose(fp);
 
 

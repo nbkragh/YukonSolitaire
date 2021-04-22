@@ -5,31 +5,48 @@
 
 #define MAXCHAR 1000
 
-
+void printBoard();
+void showDeck();
+element* C[7];
+element* stack = NULL;
 
 int main(){
-    element* C[7];
+    
     card* newCard = (card*)malloc(sizeof(card));
 
-    element* stack = NULL;
+    for (size_t i = 0; i < 7; i++) //populate C[]
+    {
+        C[i] = (element*)(malloc(sizeof(element)));
+    }
+    
     top(stack);
     stack = (element*)(malloc(sizeof(element)));
     cardsFromFile(&stack);
+    printBoard();
+    showDeck();
+}
 
-    // for(int i = 0; i < 7; i++){
-    //     C[i] = malloc(sizeof(struct element));
-    //     C[i]->next = (struct element*)malloc(sizeof(struct element));
-    //     newCard->value = i;
-    //     strcpy(newCard->name , "AA");
-    //     newCard->shown = 0;
-    //     C[i]->data = *newCard;
-    // }
-    // for(int i = 0; i < 7; i++){
-    //     printf(" %d %s %d", (C[i]->data).value, (C[i]->data).name, (C[i]->data).shown);
-    // }
-    // FILE* inStream = fopen("Cards.txt","r"); 
-    // char str[200];
-    // if (!inStream) { printf( "Fejl i fil stream læsning");}
-    // while(fgets(str, 200, inStream)) printf("%s", str);
-    // fclose(inStream);
+void showDeck(){
+    element* currentE = stack;
+    for (size_t i = 0; i < 52; i++){ //kan antage at stack.length er 52 pga. input validering 
+        
+        *C[i % 7] = *currentE; 
+        
+        printf("%i : %s \n",i % 7, C[i % 7]->data.name);
+        currentE = currentE->next;
+    }
+    
+}
+void printBoard(){
+    printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n");
+    for (size_t i = 0; i < 8; i++){
+        for (size_t j = 0; j < 7; j++)
+        {
+            //printf(C[j]->data.name);
+        }
+        
+
+    }
+    
+    
 }
