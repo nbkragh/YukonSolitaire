@@ -15,6 +15,7 @@ int main(){
     top(stack);
     stack = (element*)(malloc(sizeof(element)));
     cardsFromFile(&stack);
+    shuffleList(&stack);
 
     // for(int i = 0; i < 7; i++){
     //     C[i] = malloc(sizeof(struct element));

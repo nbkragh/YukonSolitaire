@@ -21,7 +21,7 @@ void LoadCard(char *, element**);
 void cardsFromFile( element**);
 void displayGame(void);
 void top (element*);
-
+void shuffleList(element**);
 
 #endif //YUKONSOLITAIRE_CARDFUNCTIONS_H
 

@@ -124,26 +124,77 @@ void cardsFromFile( element** stack){
 
 //    while (fgets(str, MAXCHAR, fp) != NULL)
 //        printf("%s\n", str);
+    //shuffleList((element **) &stack);
     fclose(fp);
 
 
 }
 /* count how many elements there are in the list, then scan to the halfway point, breaking the last link */
-element* splitAtHalf (element* first){
-    size_t numElems = 0;
-    for (element* curr = (element *) first; curr != NULL ; curr = (element *) first->next) {
-        numElems++;
+//element* splitAtHalf (element* first){
+//    size_t numElems = 52;
+//    for (element* curr = first; curr != NULL ; curr = first->next) {
+//        numElems++;
+//    }
+//
+//    for (size_t i = 0; i < numElems / 2 - 1; ++i) {
+//        first = first ->next;
+//    }
+//
+//    element* result = (element *) first->next;
+//    first ->next = NULL;
+//    return result;
+//
+//}
+
+//element* splitAtHalf (element* first){
+//    element* fast = first;
+//    while (fast ->next->next != NULL){
+//        fast = fast ->next->next;
+//        first = first ->next;
+//    }
+//
+//    element* result = first ->next;
+//    first->next = NULL;
+//    return result;
+//}
+void splitList(struct element *head, struct element **head1_ref,
+               struct element **head2_ref)
+{
+    struct element *slow_ptr = head;
+    struct element *fast_ptr = head;
+
+    if(head == NULL)
+        return;
+
+    /* If there are odd nodes in the circular list then
+       fast_ptr->next becomes head and for even nodes
+       fast_ptr->next->next becomes head */
+    while(fast_ptr->next != head &&
+          fast_ptr->next->next != head)
+    {
+        fast_ptr = fast_ptr->next->next;
+        slow_ptr = slow_ptr->next;
     }
 
-    for (size_t i = 0; i < numElems / 2 - 1; ++i) {
-        first = first ->next;
-    }
+    /* If there are even elements in list then move fast_ptr */
+    if(fast_ptr->next->next == head)
+        fast_ptr = fast_ptr->next;
 
-    element* result = (element *) first->next;
-    first ->next = NULL;
-    return result;
+    /* Set the head pointer of first half */
+    *head1_ref = head;
 
+    /* Set the head pointer of second half */
+    if(head->next != head)
+        *head2_ref = slow_ptr->next;
+
+    /* Make second half circular */
+    fast_ptr->next = slow_ptr->next;
+
+    /* Make first half circular */
+    slow_ptr->next = head;
 }
+
+
 /* iteratively track the first element of one of the lists onto the back of the list being built, then to switch which list is which */
 void interleave(element* first, element* second) {
     element* tail = NULL;
@@ -166,11 +217,31 @@ void interleave(element* first, element* second) {
         second = first;
     }
 }
+void printList(struct element *head){
+
+    struct element *temp = head;
+    while (temp != NULL){
+        printf("%s\n", temp->data.name);
+        temp = temp->next;
+    }
+}
+
+
+
 /* first, split the list in half; second, shuffle the elements together. */
 void shuffleList(element** head){
     if (* head == NULL) return;
+    //struct element *head = NULL;
+    struct element *head1 = NULL;
+    struct element *head2 = NULL;
 
-    element* half = (element *) splitAtHalf(*head);
-    interleave(*head, half);
-    *head = half;
+    splitList((struct element *) head, &head1, &head2);
+
+//    struct element half = splitList((struct element *) head, &head1, &head2);
+//    interleave(*head, half);
+//    *head = half;
+
+
+    printList((element *) head);
 }
+
