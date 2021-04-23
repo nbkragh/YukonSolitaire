@@ -23,6 +23,7 @@ typedef struct card {
     char name[2];   // String format af value+suit f.eks. "AC" , "7H" , "KC", "TS"
     int shown;      // boolean for synlig / ikke synlig
     struct card *next;
+    struct card *prev;
 } card;
 void LoadCard(char *, card**);
 void cardsFromFile(card**);
