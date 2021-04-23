@@ -18,11 +18,11 @@ typedef struct element {
     struct Card data;
     struct element* next;
 } element;
-void LoadCard(char *, element**);
-void cardsFromFile( element**);
+void push( element*, element*);
+void LoadCard(char *, element*);
+void cardsFromFile( element*);
 void displayGame(void);
 void top (element*);
-
 
 #endif //YUKONSOLITAIRE_CARDFUNCTIONS_H
 

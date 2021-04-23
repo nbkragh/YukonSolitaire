@@ -7,6 +7,7 @@
 #include "CardFunctions.h"
 #include <string.h>
 #include <ctype.h>
+//#include <ctype.h>
 #define MAXCHAR 1000
 
 
@@ -39,11 +40,12 @@ int valueFromCardName(char* name){
 char suitFromCardName(char* name){
     return *(name+1);
 }
-void push(element* e, element** stack){
+void push(element* e, element* stack){
     //struct element* Element = (struct element*) malloc(sizeof (struct element));
     //Element ->data = data;
-    e ->next = *stack;
-    (*stack) = e;
+    e ->next = stack;
+    (stack) = e;
+    top(stack);
 }
 
 void pop( element** stack){
@@ -66,7 +68,7 @@ void top( element* stack){
     }
 }
 
-void LoadCard(char* input, element** stack){
+void LoadCard(char* input, element* stack){
     //element* root = ( element*) malloc(sizeof ( element));
     //root ->data = *newCard;
     //root ->next = NULL;
@@ -86,7 +88,7 @@ void LoadCard(char* input, element** stack){
     newCard = NULL;
 }
 
-void cardsFromFile( element** stack){
+void cardsFromFile( element* stack){
     FILE *fp;
     char str[4];
     char* filename = "..\\Cards.txt";
