@@ -5,14 +5,14 @@
 
 
 void printBoard(void);
-void prepareShowStack(element* );
-element* C[7];
-element* stack = NULL;
+void prepareShowStack(card* );
+card* C[7];
+card* stack = NULL;
 
 int main(){
     for (size_t i = 0; i < 7; i++) //populate C[]
     {
-        C[i] = (element*)(malloc(sizeof(element)));
+        C[i] = (card*)(malloc(sizeof(card)));
         C[i]->next = NULL;
     }
     // element* newCard = (element*)malloc(sizeof(card));
@@ -25,12 +25,12 @@ int main(){
     // prepareShowStack(stack);
 }
 
-void prepareShowStack(element* s){
+void prepareShowStack(card* s){
 
     
-    element* currentE = s;
+    card* currentE = s;
     for (size_t i = 0; i < 52; i++){ //kan antage at stack.length er 52 pga. input validering 
-        element copyOfcurrentE = *currentE;
+        card copyOfcurrentE = *currentE;
         push(&copyOfcurrentE, (C[i % 7]) ); 
         printf("%i : %s \n",i % 7, C[i % 7]->name);
         currentE = currentE->next;

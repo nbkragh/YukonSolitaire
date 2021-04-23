@@ -12,25 +12,24 @@
 //    int shown;      // boolean for synlig / ikke synlig
 //} card;
 //
-//typedef struct element {
+//typedef struct card {
 //    struct Card data;
 //    int key;
-//    struct element* next;
-//} element;
-typedef struct element {
+//    struct card* next;
+//} card;
+typedef struct card {
     int  value;     // værdien 1-13 (A1..10JQK)
     int shown;      // boolean for synlig / ikke synlig
     char suit;      // Heart Diamond Spades Clubs
     char name[2];   // String format af value+suit f.eks. "AC" , "7H" , "KC", "TS"
     int shown;      // boolean for synlig / ikke synlig
-    struct element *next;
-} element;
-void push(struct element**, char*);
-void LoadCard(char *, element*);
-void cardsFromFile( element*);
+    struct card *next;
+} card;
+void LoadCard(char *, card**);
+void cardsFromFile(card**);
 void displayGame(void);
-void top (element*);
-void shuffleList(element**);
+void top (card*);
+void shuffleList(card**);
 
 #endif //YUKONSOLITAIRE_CARDFUNCTIONS_H
 

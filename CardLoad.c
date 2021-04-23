@@ -12,8 +12,8 @@
 #define MAXCHAR 1000
 
 
- //element *head = NULL;
- //element *current = NULL;
+ //card *head = NULL;
+ //card *current = NULL;
 
 int valueFromCardName(char* name){
     switch (toupper(*name))
@@ -43,9 +43,9 @@ char suitFromCardName(char* name){
 }
 
 
-void push(struct element **head_ref, char* input){
-    struct element *ptr1 = (struct element *)malloc(sizeof(struct element));
-    struct element *temp = *head_ref;
+void push(struct card **head_ref, char* input){
+    struct card *ptr1 = (struct card *)malloc(sizeof(struct card));
+    struct card *temp = *head_ref;
     ptr1->value = valueFromCardName(input);
     ptr1->suit = suitFromCardName(input);
     strcpy(ptr1->name, input);
@@ -65,9 +65,9 @@ void push(struct element **head_ref, char* input){
 
     *head_ref = ptr1;
 }
-int countNodes(struct element* head)
+int countNodes(struct card* head)
 {
-    struct element* temp = head;
+    struct card* temp = head;
     int result = 0;
     if (head != NULL) {
         do {
@@ -80,9 +80,9 @@ int countNodes(struct element* head)
 }
 
 /* Function to print nodes in a given Circular linked list */
-void printList(struct element *head){
+void printList(struct card *head){
 
-    //struct element *temp = head;
+    //struct card *temp = head;
     for (int i = 0; i < countNodes(head); ++i) {
         printf("%s ", head->name);
         //printf("\n");
@@ -91,11 +91,11 @@ void printList(struct element *head){
 
 }
 
-void pop( element** stack){
+void pop(card** stack){
 
     if (stack != NULL){
         printf("Element popped: %s\n", (*stack) ->name);
-         element* tempPtr = *stack;
+        card* tempPtr = *stack;
         *stack = (*stack) -> next;
         free(tempPtr);
     } else {
@@ -103,16 +103,16 @@ void pop( element** stack){
     }
 }
 
-void top( element* stack){
+void top(card* stack){
     if (stack != NULL){
         printf("Element on top: %s\n", stack ->name);
     } else {
         printf("The Stack is empty.\n");
     }
 }
-void splitList(struct element *head, struct element **head1_ref, struct element **head2_ref) {
-    struct element *slow_ptr = head;
-    struct element *fast_ptr = head;
+void splitList(struct card *head, struct card **head1_ref, struct card **head2_ref) {
+    struct card *slow_ptr = head;
+    struct card *fast_ptr = head;
 
     if(head == NULL)
         return;
@@ -143,8 +143,8 @@ void splitList(struct element *head, struct element **head1_ref, struct element 
     slow_ptr->next = head;
 }
 
-void LoadCard(char* input, element* stack){
-    //element* root = ( element*) malloc(sizeof ( element));
+void LoadCard(char* input, card** stack){
+    //card* root = ( card*) malloc(sizeof ( card));
     //root ->data = *newCard;
     //root ->next = NULL;
     //printf("input: %s", input);
@@ -156,7 +156,7 @@ void LoadCard(char* input, element* stack){
     //printf("newcard->name: %s \n", newCard->name);
     //newCard->shown = 1;
 
-//    element* newElement = ( element*) malloc(sizeof ( element));
+//    card* newElement = ( card*) malloc(sizeof ( card));
 //    newElement->value = valueFromCardName(input);
 //    newElement->suit = suitFromCardName(input);
 //    strcpy(newElement->name,input);
@@ -175,7 +175,7 @@ void LoadCard(char* input, element* stack){
 //    newElement = NULL;
 }
 
-void cardsFromFile( element* stack){
+void cardsFromFile(card** stack){
     FILE *fp;
     char str[4];
     char* filename = "..\\Cards.txt";
@@ -200,15 +200,15 @@ void cardsFromFile( element* stack){
 
 //    while (fgets(str, MAXCHAR, fp) != NULL)
 //        printf("%s\n", str);
-    //shuffleList((element **) &stack);
+    //shuffleList((card **) &stack);
     fclose(fp);
 
 
 }
 /* count how many elements there are in the list, then scan to the halfway point, breaking the last link */
-//element* splitAtHalf (element* first){
+//card* splitAtHalf (card* first){
 //    size_t numElems = 52;
-//    for (element* curr = first; curr != NULL ; curr = first->next) {
+//    for (card* curr = first; curr != NULL ; curr = first->next) {
 //        numElems++;
 //    }
 //
@@ -216,27 +216,27 @@ void cardsFromFile( element* stack){
 //        first = first ->next;
 //    }
 //
-//    element* result = (element *) first->next;
+//    card* result = (card *) first->next;
 //    first ->next = NULL;
 //    return result;
 //
 //}
 
-//element* splitAtHalf (element* first){
-//    element* fast = first;
+//card* splitAtHalf (card* first){
+//    card* fast = first;
 //    while (fast ->next->next != NULL){
 //        fast = fast ->next->next;
 //        first = first ->next;
 //    }
 //
-//    element* result = first ->next;
+//    card* result = first ->next;
 //    first->next = NULL;
 //    return result;
 //}
-//void split(struct element* source, struct element** frontRef, struct element** backRef){
+//void split(struct card* source, struct card** frontRef, struct card** backRef){
 //    int len = 52;
 //
-//    //struct element* current = source;
+//    //struct card* current = source;
 //
 //    int hopCount = (len -1)/2;
 //    for (int i = 0; i < hopCount; i++) {
@@ -250,10 +250,10 @@ void cardsFromFile( element* stack){
 //
 //}
 
-/* iteratively track the first element of one of the lists onto the back of the list being built, then to switch which list is which */
-void interleave(element* first, element* second) {
-    element* tail = NULL;
-    /* Append the first element of 'second' to the list. */
+/* iteratively track the first card of one of the lists onto the back of the list being built, then to switch which list is which */
+void interleave(card* first, card* second) {
+    card* tail = NULL;
+    /* Append the first card of 'second' to the list. */
     while (second != NULL){
         if (tail == NULL){
             tail = second;
@@ -262,48 +262,65 @@ void interleave(element* first, element* second) {
             tail = second;
         }
         /* cut the head of 'second' from 'second' */
-        element* next = second ->next;
+        card* next = second ->next;
         second ->next = NULL;
         second = next;
 
         /* swap the two lists */
-        element* temp = first;
+        card* temp = first;
         first = second;
         second = first;
+
+
     }
 }
-void merge(struct element *p, struct element **q)
-{
-    struct element *p_curr = p, *q_curr = *q;
-    struct element *p_next, *q_next;
+//void merge(struct card *p, struct card **q)
+//{
+//    struct card *p_curr = p, *q_curr = *q;
+//    struct card *p_next, *q_next;
+//
+//    // While therre are avialable positions in p
+//    while (p_curr != NULL && q_curr != NULL)
+//    {
+//        // Save next pointers
+//        p_next = p_curr->next;
+//        q_next = q_curr->next;
+//
+//        // Make q_curr as next of p_curr
+//        q_curr->next = p_next; // Change next pointer of q_curr
+//        p_curr->next = q_curr; // Change next pointer of p_curr
+//
+//        // Update current pointers for next iteration
+//        p_curr = p_next;
+//        q_curr = q_next;
+//    }
+//
+//    *q = q_curr; // Update head pointer of second list
+//}
+struct card* interleave2(struct card *p, struct card *q){
+    struct card *temp = NULL;
+    struct card *r = NULL;
 
-    // While therre are avialable positions in p
-    while (p_curr != NULL && q_curr != NULL)
-    {
-        // Save next pointers
-        p_next = p_curr->next;
-        q_next = q_curr->next;
+    r = p;
+    temp = p;
 
-        // Make q_curr as next of p_curr
-        q_curr->next = p_next; // Change next pointer of q_curr
-        p_curr->next = q_curr; // Change next pointer of p_curr
-
-        // Update current pointers for next iteration
-        p_curr = p_next;
-        q_curr = q_next;
-    }
-
-    *q = q_curr; // Update head pointer of second list
+    while (temp ->next != p)
+        temp = temp->next;
+    temp->next = q;
+    temp = q;
+    while (temp->next != q)
+        temp = temp->next;
+    temp->next =r;
+    return r;
 }
-
 
 
 /* first, split the list in half; second, shuffle the elements together. */
-void shuffleList(element** stack){
+void shuffleList(card** stack){
     if (* stack == NULL) return;
-    //struct element *head = NULL;
-    struct element *head1 = NULL;
-    struct element *head2 = NULL;
+    //struct card *head = NULL;
+    struct card *head1 = NULL;
+    struct card *head2 = NULL;
 
     printf("\n");
     printf("before: \n");
@@ -317,18 +334,19 @@ void shuffleList(element** stack){
     printf("second half\n");
     printList(head2);
 
+    interleave(head1,head2);
     //merge(head2,&head1);
     printf("\n\n");
     printf("head1 \n");
-    printList(head2);
+    printList(head1);
 
-    //split((struct element *) stack, &stack1, &stack2);
+    //split((struct card *) stack, &stack1, &stack2);
 
-//    struct element half = splitList((struct element *) head, &head1, &head2);
+//    struct card half = splitList((struct card *) head, &head1, &head2);
 //    interleave(*head, half);
 //    *head = half;
 
 
-    //printList((struct element *) stack);
+    //printList((struct card *) stack);
 }
 
