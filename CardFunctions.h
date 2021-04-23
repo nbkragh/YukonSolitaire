@@ -29,6 +29,8 @@ void cardsFromFile(card**);
 void displayGame(void);
 void top (card*);
 void shuffleList(card**);
+card* createCard(char*);
+void push(card **, card*);
 
 #endif //YUKONSOLITAIRE_CARDFUNCTIONS_H
 

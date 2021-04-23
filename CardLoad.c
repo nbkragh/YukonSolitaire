@@ -42,28 +42,32 @@ char suitFromCardName(char* name){
     return *(name+1);
 }
 
-
-void push(struct card **head_ref, char* input){
+card* createCard(char* input){ // create nyt kort fra string
     struct card *ptr1 = (struct card *)malloc(sizeof(struct card));
-    struct card *temp = *head_ref;
     ptr1->value = valueFromCardName(input);
     ptr1->suit = suitFromCardName(input);
     strcpy(ptr1->name, input);
     ptr1->shown = 1;
-    ptr1->next = *head_ref;
+    return ptr1;
+}
+
+void push(card **head_ref, card* incard){
+    
+    struct card *temp = *head_ref;
+    
+    incard->next = *head_ref;
 
     /* If linked list is not NULL then set the next of
       last node */
-    if(*head_ref != NULL)
+    if(*head_ref != NULL  && (*head_ref)->next != NULL)
     {
-        while(temp->next != *head_ref)
-            temp = temp->next;
-        temp->next = ptr1;
+        while(temp->next != *head_ref) temp = temp->next;
+        temp->next = incard;
     }
     else
-        ptr1->next = ptr1; /*For the first node */
+        incard->next = incard; /*For the first node */
 
-    *head_ref = ptr1;
+    *head_ref = incard;
 }
 int countNodes(struct card* head)
 {
@@ -166,8 +170,8 @@ void LoadCard(char* input, card** stack){
     //printf("newcard->data.name: %s \n", newElement->data.name);
     //newElement->next = NULL;
     //for (int i = 0; i < 10; ++i) {
-        push(stack,input);
-        top(*stack);
+        push(stack,createCard(input));
+        //top(*stack);
     //}
 //    free(newCard);
 //    newCard = NULL;

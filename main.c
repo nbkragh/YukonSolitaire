@@ -17,36 +17,44 @@ int main(){
     }
     // element* newCard = (element*)malloc(sizeof(card));
 
-
-
-    cardsFromFile(&stack);
-    printBoard();   
+    cardsFromFile(&stack); 
     
     prepareShowStack(stack);
+    printBoard();
 }
 
 void prepareShowStack(card* s){
-
-    
-    card* currentE = s;
+    card* currentCard = s;
     for (size_t i = 0; i < 52; i++){ //kan antage at stack.length er 52 pga. input validering 
-        card copyOfcurrentE = *currentE;
-        //push(&copyOfcurrentE, (C[i % 7]) ); 
-        printf("%i : %s \n",i % 7, C[i % 7]->name);
-        currentE = currentE->next;
+        
+        push(&C[i % 7], createCard(currentCard->name));  //kopiér kort fra stack (createCard() ) og pladsér i C[i] listen
+        printf("%s ", C[i % 7]->name);
+        currentCard = currentCard->next;
     }
-    free(currentE);
-    currentE = NULL;
+    free(currentCard);
+    currentCard = NULL;
 }
 void printBoard(){
-    printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n");
-    for (size_t i = 0; i < 8; i++){
-        for (size_t j = 0; j < 7; j++)
-        {
-            //printf(C[j]->data.name);
-        }
-        
+    card* copyC[7];
+    for (size_t i = 0; i < 7; i++)
+    {
+        copyC[i] = C[i];
+        printf("%s ", copyC[i]->name);
+    }
+    
 
+    printf("\nC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
+    // for (size_t i = 0; i < 8; i++){
+    //     for (size_t j = 0; j < 7; j++)
+    //     {
+    //         printf("%s", C[j]->name);
+    //     }
+    // }
+
+    for (size_t i = 0; i < 52; i++){ //kan antage at stack.length er 52 pga. input validering 
+        
+        printf("%s ", copyC[i % 7]->name);
+        copyC[i % 7] = copyC[i % 7]->next;
     }
     
     
