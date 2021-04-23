@@ -28,34 +28,35 @@ void prepareShowStack(card* s){
     for (size_t i = 0; i < 52; i++){ //kan antage at stack.length er 52 pga. input validering 
         
         push(&C[i % 7], createCard(currentCard->name));  //kopiér kort fra stack (createCard() ) og pladsér i C[i] listen
-        printf("%s ", C[i % 7]->name);
         currentCard = currentCard->next;
     }
     free(currentCard);
     currentCard = NULL;
 }
+
+/**
+ * 
+ */
 void printBoard(){
     card* copyC[7];
     for (size_t i = 0; i < 7; i++)
     {
         copyC[i] = C[i];
-        printf("%s ", copyC[i]->name);
     }
     
-
-    printf("\nC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
-    // for (size_t i = 0; i < 8; i++){
-    //     for (size_t j = 0; j < 7; j++)
-    //     {
-    //         printf("%s", C[j]->name);
-    //     }
-    // }
+    printf("\nC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
 
     for (size_t i = 0; i < 52; i++){ //kan antage at stack.length er 52 pga. input validering 
         
-        printf("%s ", copyC[i % 7]->name);
+        printf("%s\t", copyC[i % 7]->name);
+        
         copyC[i % 7] = copyC[i % 7]->next;
+        
+        if((((i+1) % 7) == 0)){
+            printf("\n");
+        }
     }
     
-    
+    //free(copyC);
+    //copyC == NULL;
 }

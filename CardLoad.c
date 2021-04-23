@@ -52,7 +52,7 @@ card* createCard(char* input){ // create nyt kort fra string
 }
 
 void push(card **start, card* inCard){
-    if (*start == NULL){
+    if (*start == NULL || (*start)->next == NULL || (*start)->next == NULL ){
         inCard->next = inCard->prev = inCard;
         *start = inCard;
         return;
