@@ -19,7 +19,7 @@ typedef struct element {
 } element;
 void LoadCard(char *, element**);
 void cardsFromFile( element**);
-void displayGame(void);
+int displayGame(void);
 void top (element*);
 
 

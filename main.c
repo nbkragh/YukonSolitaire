@@ -8,6 +8,7 @@
 
 
 int main(){
+    setbuf(stdout, 0);
     element* C[7];
     card* newCard = (card*)malloc(sizeof(card));
 
@@ -15,7 +16,7 @@ int main(){
     top(stack);
     stack = (element*)(malloc(sizeof(element)));
     cardsFromFile(&stack);
-
+    displayGame();
     // for(int i = 0; i < 7; i++){
     //     C[i] = malloc(sizeof(struct element));
     //     C[i]->next = (struct element*)malloc(sizeof(struct element));
