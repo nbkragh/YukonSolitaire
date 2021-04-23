@@ -8,18 +8,18 @@
 
 
 int main(){
-    element* C[7];
+    card* C[7];
     //card* newCard = (card*)malloc(sizeof(card));
 
-    element* stack = NULL;
+    card* stack = NULL;
     top(stack);
-    //stack = (element*)(malloc(sizeof(element)));
+    //stack = (card*)(malloc(sizeof(card)));
     cardsFromFile(&stack);
     shuffleList(&stack);
 
     // for(int i = 0; i < 7; i++){
-    //     C[i] = malloc(sizeof(struct element));
-    //     C[i]->next = (struct element*)malloc(sizeof(struct element));
+    //     C[i] = malloc(sizeof(struct card));
+    //     C[i]->next = (struct card*)malloc(sizeof(struct card));
     //     newCard->value = i;
     //     strcpy(newCard->name , "AA");
     //     newCard->shown = 0;
