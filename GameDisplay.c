@@ -14,6 +14,7 @@ char returnMsg[50] = "OK";
 void noParameterMsg(char *command);
 
 /**
+ * @author Emil Nymark Trangeled - s195478
  * Creates the input command text and allows commands to be entered.
  * If commands with no parameters are entered it will return a descriptive error message.
  * If unknown commands are entered it will say so.
@@ -22,8 +23,8 @@ void noParameterMsg(char *command);
 int displayGame(void) {
 
     char input[inputSize] ="",command[3]="",parameter[25]="", lastCommand[inputSize] = "";
-    int i;
     char *pTokens[2];
+    int i;
 
 
     // while loop for the pTokens loop
@@ -103,6 +104,7 @@ int displayGame(void) {
 }
 
 /**
+ * @author Emil Nymark Trangeled - s195478
  * Creates a string for the parameters that does not contain any parameter
  * and stores the error in returnMsg.
  * @param command The command that does not contain any parameters.
