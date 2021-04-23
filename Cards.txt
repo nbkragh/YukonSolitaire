@@ -47,12 +47,6 @@ AS
 8S
 9S
 TS
-<<<<<<< HEAD
-JD
-QD
-KD 
-=======
 JS
 QS
-KS
->>>>>>> origin/Shuffek_funktion
+KS 

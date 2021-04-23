@@ -22,7 +22,6 @@ typedef struct card {
     int shown;      // boolean for synlig / ikke synlig
     char suit;      // Heart Diamond Spades Clubs
     char name[2];   // String format af value+suit f.eks. "AC" , "7H" , "KC", "TS"
-    int shown;      // boolean for synlig / ikke synlig
     struct card *next;
 } card;
 void LoadCard(char *, card**);

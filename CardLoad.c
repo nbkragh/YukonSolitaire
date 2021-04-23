@@ -9,7 +9,7 @@
 #include <ctype.h>
 #include <mmcobj.h>
 
-#define MAXCHAR 1000
+//#define MAXCHAR 1000
 
 
  //card *head = NULL;
@@ -167,7 +167,7 @@ void LoadCard(char* input, card** stack){
     //newElement->next = NULL;
     //for (int i = 0; i < 10; ++i) {
         push(stack,input);
-        top(stack);
+        top(*stack);
     //}
 //    free(newCard);
 //    newCard = NULL;

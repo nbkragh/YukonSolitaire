@@ -19,10 +19,10 @@ int main(){
 
 
 
-    // cardsFromFile(stack);
-    // printBoard();   
+    cardsFromFile(&stack);
+    printBoard();   
     
-    // prepareShowStack(stack);
+    prepareShowStack(stack);
 }
 
 void prepareShowStack(card* s){
@@ -31,7 +31,7 @@ void prepareShowStack(card* s){
     card* currentE = s;
     for (size_t i = 0; i < 52; i++){ //kan antage at stack.length er 52 pga. input validering 
         card copyOfcurrentE = *currentE;
-        push(&copyOfcurrentE, (C[i % 7]) ); 
+        //push(&copyOfcurrentE, (C[i % 7]) ); 
         printf("%i : %s \n",i % 7, C[i % 7]->name);
         currentE = currentE->next;
     }
