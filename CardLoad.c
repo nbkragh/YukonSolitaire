@@ -41,9 +41,9 @@ int valueFromCardName(char* name){
 char suitFromCardName(char* name){
     return *(name+1);
 }
-
 card* createCard(char* input){ // create nyt kort fra string
-    struct card *ptr1 = (struct card *)malloc(sizeof(struct card));
+    
+    struct card *ptr1 = (card *)malloc(sizeof(card));
     ptr1->value = valueFromCardName(input);
     ptr1->suit = suitFromCardName(input);
     strcpy(ptr1->name, input);
@@ -51,24 +51,44 @@ card* createCard(char* input){ // create nyt kort fra string
     return ptr1;
 }
 
-void push(card **head_ref, card* incard){
-    
-    struct card *temp = *head_ref;
-    
-    incard->next = *head_ref;
-
-    /* If linked list is not NULL then set the next of
-      last node */
-    if(*head_ref != NULL  && (*head_ref)->next != NULL)
-    {
-        while(temp->next != *head_ref) temp = temp->next;
-        temp->next = incard;
+void push(card **start, card* inCard){
+    if (*start == NULL){
+        inCard->next = inCard->prev = inCard;
+        *start = inCard;
+        return;
     }
-    else
-        incard->next = incard; /*For the first node */
+    card *last = (*start) ->prev;
 
-    *head_ref = incard;
+    inCard->next = *start;
+    (*start)->prev = inCard;
+    inCard->prev = last;
+    last->next = inCard;
 }
+
+
+
+//void push2(struct card **head_ref, char* input){
+//    struct card *ptr1 = (struct card *)malloc(sizeof(struct card));
+//    struct card *temp = *head_ref;
+//    ptr1->value = valueFromCardName(input);
+//    ptr1->suit = suitFromCardName(input);
+//    strcpy(ptr1->name, input);
+//    ptr1->shown = 1;
+//    ptr1->next = *head_ref;
+//
+//    /* If linked list is not NULL then set the next of
+//      last node */
+//    if(*head_ref != NULL)
+//    {
+//        while(temp->next != *head_ref)
+//            temp = temp->next;
+//        temp->next = ptr1;
+//    }
+//    else
+//        ptr1->next = ptr1; /*For the first node */
+//
+//    *head_ref = ptr1;
+//}
 int countNodes(struct card* head)
 {
     struct card* temp = head;
@@ -209,61 +229,41 @@ void cardsFromFile(card** stack){
 
 
 }
-/* count how many elements there are in the list, then scan to the halfway point, breaking the last link */
-//card* splitAtHalf (card* first){
-//    size_t numElems = 52;
-//    for (card* curr = first; curr != NULL ; curr = first->next) {
-//        numElems++;
-//    }
-//
-//    for (size_t i = 0; i < numElems / 2 - 1; ++i) {
-//        first = first ->next;
-//    }
-//
-//    card* result = (card *) first->next;
-//    first ->next = NULL;
-//    return result;
-//
-//}
 
-//card* splitAtHalf (card* first){
-//    card* fast = first;
-//    while (fast ->next->next != NULL){
-//        fast = fast ->next->next;
-//        first = first ->next;
-//    }
-//
-//    card* result = first ->next;
-//    first->next = NULL;
-//    return result;
-//}
-//void split(struct card* source, struct card** frontRef, struct card** backRef){
-//    int len = 52;
-//
-//    //struct card* current = source;
-//
-//    int hopCount = (len -1)/2;
-//    for (int i = 0; i < hopCount; i++) {
-//        source = source->next;
-//    }
-//
-//    *frontRef = source;
-//    *backRef = source->next;
-//    source->next= NULL;
-//
-//
-//}
 
-/* iteratively track the first card of one of the lists onto the back of the list being built, then to switch which list is which */
-void interleave(card* first, card* second) {
+
+void interleave(card* first, card* second){
     card* tail = NULL;
-    /* Append the first card of 'second' to the list. */
-    while (second != NULL){
+    for (int i = 0; i < 52; ++i) {
+
+
         if (tail == NULL){
             tail = second;
         } else {
             tail ->next = second;
-            tail = second;
+        }
+
+        card* next = second->next;
+        second->next = first;
+        second = next;
+        tail = first;
+
+        next = first->next;
+        first->next = NULL;
+        first = next;
+    }
+}
+
+/* iteratively track the first card of one of the lists onto the back of the list being built, then to switch which list is which */
+void interleave_(card* first, card* second) {
+    card* prev = NULL;
+    /* Append the first card of 'second' to the list. */
+    while (second != NULL){
+        if (prev == NULL){
+            prev = second;
+        } else {
+            prev ->next = second;
+            prev = second;
         }
         /* cut the head of 'second' from 'second' */
         card* next = second ->next;
@@ -274,8 +274,6 @@ void interleave(card* first, card* second) {
         card* temp = first;
         first = second;
         second = first;
-
-
     }
 }
 //void merge(struct card *p, struct card **q)
@@ -301,28 +299,70 @@ void interleave(card* first, card* second) {
 //
 //    *q = q_curr; // Update head pointer of second list
 //}
-struct card* interleave2(struct card *p, struct card *q){
+struct card* interleave3(struct card* n1, struct card* n2){
+    struct card *result, *temp1, *temp2;
+
+    if (!n1){
+        return n2;
+    }
+    if (!n2){
+        return n1;
+    }
+    result = n1;
+    while (n1 != NULL && n2 != NULL){
+        temp1 = n1->next;
+        temp2 = n2->next;
+
+        if (n1->next)
+            n2->next = n1->next;
+        n1->next = n2;
+
+        n1 = temp1;
+        n2 = temp2;
+    }
+    return result;
+}
+struct card* interleave5(struct card *first, struct card *second){
     struct card *temp = NULL;
-    struct card *r = NULL;
+    struct card *result = NULL;
 
-    r = p;
-    temp = p;
+    result = first;
+    temp = first;
 
-    while (temp ->next != p)
+    for (int i = 0; i < 52; ++i) {
         temp = temp->next;
-    temp->next = q;
-    temp = q;
-    while (temp->next != q)
+        temp->next = second;
+        temp = second;
         temp = temp->next;
-    temp->next =r;
-    return r;
+        temp->next = first;
+        temp = first;
+    }
+    temp->next = result;
+    return result;
+}
+
+struct card* interleave4(struct card *first, struct card *second){
+    struct card *temp = NULL;
+    struct card *result = NULL;
+
+    result = first;
+    temp = first;
+
+    while (temp ->next != first)
+        temp = temp->next;
+    temp->next = second;
+    temp = second;
+    while (temp->next != second)
+        temp = temp->next;
+    temp->next =result;
+    return result;
 }
 
 
 /* first, split the list in half; second, shuffle the elements together. */
 void shuffleList(card** stack){
     if (* stack == NULL) return;
-    //struct card *head = NULL;
+    struct card *head = NULL;
     struct card *head1 = NULL;
     struct card *head2 = NULL;
 
@@ -338,11 +378,12 @@ void shuffleList(card** stack){
     printf("second half\n");
     printList(head2);
 
-    interleave(head1,head2);
+    head = interleave5(head1,head2);
     //merge(head2,&head1);
+    //interleave4(head1,head2);
     printf("\n\n");
-    printf("head1 \n");
-    printList(head1);
+    printf("merged \n");
+    printList(head);
 
     //split((struct card *) stack, &stack1, &stack2);
 

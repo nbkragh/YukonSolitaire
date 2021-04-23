@@ -23,6 +23,7 @@ typedef struct card {
     char suit;      // Heart Diamond Spades Clubs
     char name[2];   // String format af value+suit f.eks. "AC" , "7H" , "KC", "TS"
     struct card *next;
+    struct card *prev;
 } card;
 void LoadCard(char *, card**);
 void cardsFromFile(card**);
