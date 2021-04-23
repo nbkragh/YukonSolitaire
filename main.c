@@ -9,11 +9,11 @@
 
 int main(){
     element* C[7];
-    card* newCard = (card*)malloc(sizeof(card));
+    //card* newCard = (card*)malloc(sizeof(card));
 
     element* stack = NULL;
     top(stack);
-    stack = (element*)(malloc(sizeof(element)));
+    //stack = (element*)(malloc(sizeof(element)));
     cardsFromFile(&stack);
     shuffleList(&stack);
 

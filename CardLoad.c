@@ -12,7 +12,7 @@
 
 
  //element *head = NULL;
- element *current = NULL;
+ //element *current = NULL;
 
 int valueFromCardName(char* name){
     switch (*name)
@@ -42,17 +42,60 @@ int valueFromCardName(char* name){
 char suitFromCardName(char* name){
     return *(name+1);
 }
-void push(element* e, element** stack){
-    //struct element* Element = (struct element*) malloc(sizeof (struct element));
-    //Element ->data = data;
-    e ->next = *stack;
-    (*stack) = e;
+
+
+void push(struct element **head_ref, char* input){
+    struct element *ptr1 = (struct element *)malloc(sizeof(struct element));
+    struct element *temp = *head_ref;
+    ptr1->value = valueFromCardName(input);
+    ptr1->suit = suitFromCardName(input);
+    strcpy(ptr1->name, input);
+    ptr1->shown = 1;
+    ptr1->next = *head_ref;
+
+    /* If linked list is not NULL then set the next of
+      last node */
+    if(*head_ref != NULL)
+    {
+        while(temp->next != *head_ref)
+            temp = temp->next;
+        temp->next = ptr1;
+    }
+    else
+        ptr1->next = ptr1; /*For the first node */
+
+    *head_ref = ptr1;
+}
+int countNodes(struct element* head)
+{
+    struct element* temp = head;
+    int result = 0;
+    if (head != NULL) {
+        do {
+            temp = temp->next;
+            result++;
+        } while (temp != head);
+    }
+
+    return result;
+}
+
+/* Function to print nodes in a given Circular linked list */
+void printList(struct element *head){
+
+    //struct element *temp = head;
+    for (int i = 0; i < countNodes(head); ++i) {
+        printf("%s ", head->name);
+        //printf("\n");
+        head = head->next;
+    }
+
 }
 
 void pop( element** stack){
 
     if (stack != NULL){
-        printf("Element popped: %s\n", (*stack) -> data);
+        printf("Element popped: %s\n", (*stack) ->name);
          element* tempPtr = *stack;
         *stack = (*stack) -> next;
         free(tempPtr);
@@ -63,10 +106,42 @@ void pop( element** stack){
 
 void top( element* stack){
     if (stack != NULL){
-        printf("Element on top: %s\n", stack -> data.name);
+        printf("Element on top: %s\n", stack ->name);
     } else {
         printf("The Stack is empty.\n");
     }
+}
+void splitList(struct element *head, struct element **head1_ref, struct element **head2_ref) {
+    struct element *slow_ptr = head;
+    struct element *fast_ptr = head;
+
+    if(head == NULL)
+        return;
+
+    /* If there are odd nodes in the circular list then
+       fast_ptr->next becomes head and for even nodes
+       fast_ptr->next->next becomes head */
+    while(fast_ptr->next != head && fast_ptr->next->next != head) {
+        fast_ptr = fast_ptr->next->next;
+        slow_ptr = slow_ptr->next;
+    }
+
+    /* If there are even elements in list then move fast_ptr */
+    if(fast_ptr->next->next == head)
+        fast_ptr = fast_ptr->next;
+
+    /* Set the head pointer of first half */
+    *head1_ref = head;
+
+    /* Set the head pointer of second half */
+    if(head->next != head)
+        *head2_ref = slow_ptr->next;
+
+    /* Make second half circular */
+    fast_ptr->next = slow_ptr->next;
+
+    /* Make first half circular */
+    slow_ptr->next = head;
 }
 
 void LoadCard(char* input, element** stack){
@@ -74,26 +149,31 @@ void LoadCard(char* input, element** stack){
     //root ->data = *newCard;
     //root ->next = NULL;
     //printf("input: %s", input);
-    card* newCard = (card *)malloc(sizeof(card));
-    newCard->value = valueFromCardName(input);
-    newCard->suit = suitFromCardName(input);
+    //card* newCard = (card *)malloc(sizeof(card));
+    //newCard->value = valueFromCardName(input);
+    //newCard->suit = suitFromCardName(input);
 
-    strcpy(newCard->name, input); // kopier string ind i newCard->name
+    //strcpy(newCard->name, input); // kopier string ind i newCard->name
     //printf("newcard->name: %s \n", newCard->name);
-    newCard->shown = 1;
+    //newCard->shown = 1;
 
-    element* newElement = ( element*) malloc(sizeof ( element));
-    newElement->data = *newCard;
+//    element* newElement = ( element*) malloc(sizeof ( element));
+//    newElement->value = valueFromCardName(input);
+//    newElement->suit = suitFromCardName(input);
+//    strcpy(newElement->name,input);
+//    newElement->shown = 1;
+
+    //newElement->data = *newCard;
     //printf("newcard->data.name: %s \n", newElement->data.name);
-    newElement->next = NULL;
+    //newElement->next = NULL;
     //for (int i = 0; i < 10; ++i) {
-        push(newElement, stack);
+        push(stack,input);
         top(*stack);
     //}
-    free(newCard);
-    newCard = NULL;
-    free(newElement);
-    newElement = NULL;
+//    free(newCard);
+//    newCard = NULL;
+//    free(newElement);
+//    newElement = NULL;
 }
 
 void cardsFromFile( element** stack){
@@ -111,7 +191,7 @@ void cardsFromFile( element** stack){
     }
 
     for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 12; ++j) {
+        for (int j = 0; j < 13; ++j) {
             if (fgets(str, 4, fp) != NULL){
                 //printf("from file: %s \t", str);
                 str[strlen(str)-1] = '\0';
@@ -120,7 +200,6 @@ void cardsFromFile( element** stack){
         }
         //printf("\n");
     }
-
 
 //    while (fgets(str, MAXCHAR, fp) != NULL)
 //        printf("%s\n", str);
@@ -157,43 +236,22 @@ void cardsFromFile( element** stack){
 //    first->next = NULL;
 //    return result;
 //}
-void splitList(struct element *head, struct element **head1_ref,
-               struct element **head2_ref)
-{
-    struct element *slow_ptr = head;
-    struct element *fast_ptr = head;
-
-    if(head == NULL)
-        return;
-
-    /* If there are odd nodes in the circular list then
-       fast_ptr->next becomes head and for even nodes
-       fast_ptr->next->next becomes head */
-    while(fast_ptr->next != head &&
-          fast_ptr->next->next != head)
-    {
-        fast_ptr = fast_ptr->next->next;
-        slow_ptr = slow_ptr->next;
-    }
-
-    /* If there are even elements in list then move fast_ptr */
-    if(fast_ptr->next->next == head)
-        fast_ptr = fast_ptr->next;
-
-    /* Set the head pointer of first half */
-    *head1_ref = head;
-
-    /* Set the head pointer of second half */
-    if(head->next != head)
-        *head2_ref = slow_ptr->next;
-
-    /* Make second half circular */
-    fast_ptr->next = slow_ptr->next;
-
-    /* Make first half circular */
-    slow_ptr->next = head;
-}
-
+//void split(struct element* source, struct element** frontRef, struct element** backRef){
+//    int len = 52;
+//
+//    //struct element* current = source;
+//
+//    int hopCount = (len -1)/2;
+//    for (int i = 0; i < hopCount; i++) {
+//        source = source->next;
+//    }
+//
+//    *frontRef = source;
+//    *backRef = source->next;
+//    source->next= NULL;
+//
+//
+//}
 
 /* iteratively track the first element of one of the lists onto the back of the list being built, then to switch which list is which */
 void interleave(element* first, element* second) {
@@ -217,31 +275,63 @@ void interleave(element* first, element* second) {
         second = first;
     }
 }
-void printList(struct element *head){
+void merge(struct element *p, struct element **q)
+{
+    struct element *p_curr = p, *q_curr = *q;
+    struct element *p_next, *q_next;
 
-    struct element *temp = head;
-    while (temp != NULL){
-        printf("%s\n", temp->data.name);
-        temp = temp->next;
+    // While therre are avialable positions in p
+    while (p_curr != NULL && q_curr != NULL)
+    {
+        // Save next pointers
+        p_next = p_curr->next;
+        q_next = q_curr->next;
+
+        // Make q_curr as next of p_curr
+        q_curr->next = p_next; // Change next pointer of q_curr
+        p_curr->next = q_curr; // Change next pointer of p_curr
+
+        // Update current pointers for next iteration
+        p_curr = p_next;
+        q_curr = q_next;
     }
+
+    *q = q_curr; // Update head pointer of second list
 }
 
 
 
 /* first, split the list in half; second, shuffle the elements together. */
-void shuffleList(element** head){
-    if (* head == NULL) return;
+void shuffleList(element** stack){
+    if (* stack == NULL) return;
     //struct element *head = NULL;
     struct element *head1 = NULL;
     struct element *head2 = NULL;
 
-    splitList((struct element *) head, &head1, &head2);
+    printf("\n");
+    printf("before: \n");
+    printList(*stack);
+    printf("\n\n");
+    splitList(*stack, &head1, &head2);
+
+    printf("first half\n");
+    printList(head1);
+    printf("\n\n");
+    printf("second half\n");
+    printList(head2);
+
+    //merge(head2,&head1);
+    printf("\n\n");
+    printf("head1 \n");
+    printList(head2);
+
+    //split((struct element *) stack, &stack1, &stack2);
 
 //    struct element half = splitList((struct element *) head, &head1, &head2);
 //    interleave(*head, half);
 //    *head = half;
 
 
-    printList((element *) head);
+    //printList((struct element *) stack);
 }
 
