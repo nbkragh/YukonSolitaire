@@ -237,131 +237,82 @@ void cardsFromFile(card** stack){
 
 
 
-void interleave(card* first, card* second){
-    card* tail = NULL;
-    for (int i = 0; i < 52; ++i) {
 
 
-        if (tail == NULL){
-            tail = second;
-        } else {
-            tail ->next = second;
-        }
 
-        card* next = second->next;
-        second->next = first;
-        second = next;
-        tail = first;
 
-        next = first->next;
-        first->next = NULL;
-        first = next;
-    }
-}
+struct card* interleave(struct card *first, struct card *second){
 
-/* iteratively track the first card of one of the lists onto the back of the list being built, then to switch which list is which */
-void interleave_(card* first, card* second) {
-    card* prev = NULL;
-    /* Append the first card of 'second' to the list. */
-    while (second != NULL){
-        if (prev == NULL){
-            prev = second;
-        } else {
-            prev ->next = second;
-            prev = second;
-        }
-        /* cut the head of 'second' from 'second' */
-        card* next = second ->next;
-        second ->next = NULL;
-        second = next;
 
-        /* swap the two lists */
-        card* temp = first;
-        first = second;
-        second = first;
-    }
-}
-//void merge(struct card *p, struct card **q)
-//{
-//    struct card *p_curr = p, *q_curr = *q;
-//    struct card *p_next, *q_next;
-//
-//    // While therre are avialable positions in p
-//    while (p_curr != NULL && q_curr != NULL)
-//    {
-//        // Save next pointers
-//        p_next = p_curr->next;
-//        q_next = q_curr->next;
-//
-//        // Make q_curr as next of p_curr
-//        q_curr->next = p_next; // Change next pointer of q_curr
-//        p_curr->next = q_curr; // Change next pointer of p_curr
-//
-//        // Update current pointers for next iteration
-//        p_curr = p_next;
-//        q_curr = q_next;
+
+    struct card* whatToReturn = first;
+    struct card* temp = first;
+//    first->next = second;
+//    for (int i = 0; i < 13; ++i) {
+
+        first = first->next;
+        first->next = temp->next;
+        first = first->next;
+        first->next = second->next;
+        second = second->next;
+        temp = temp->next;
+
 //    }
+
+  return first;
+
+    /*struct card* tempFirst = NULL;
+    struct card* tempSecond = NULL;
+
+
+    tempFirst = first;
+    tempSecond = second;
+
+    for (int i = 0; i < 26; ++i) {
+        tempFirst->next = tempSecond;
+        tempSecond->prev = tempFirst;
+        tempFirst = first->next;
+        tempSecond = second->next;
+
+    }
+    return
+*/
+
+
+//    struct card *temp = NULL;
+//    struct card *result = NULL;
 //
-//    *q = q_curr; // Update head pointer of second list
+//    result = first;
+//    temp = first;
+//
+//    for (int i = 0; i < 52; ++i) {
+//        temp = temp->next;
+//        temp->next = second;
+//        temp = second;
+//        temp = temp->next;
+//        temp->next = first;
+//        //temp = first;
+//    }
+//    temp->next = result;
+//    return result;
+}
+//
+//struct card* interleave4(struct card *first, struct card *second){
+//    struct card *temp = NULL;
+//    struct card *result = NULL;
+//
+//    result = first;
+//    temp = first;
+//
+//    while (temp ->next != first)
+//        temp = temp->next;
+//    temp->next = second;
+//    temp = second;
+//    while (temp->next != second)
+//        temp = temp->next;
+//    temp->next =result;
+//    return result;
 //}
-struct card* interleave3(struct card* n1, struct card* n2){
-    struct card *result, *temp1, *temp2;
-
-    if (!n1){
-        return n2;
-    }
-    if (!n2){
-        return n1;
-    }
-    result = n1;
-    while (n1 != NULL && n2 != NULL){
-        temp1 = n1->next;
-        temp2 = n2->next;
-
-        if (n1->next)
-            n2->next = n1->next;
-        n1->next = n2;
-
-        n1 = temp1;
-        n2 = temp2;
-    }
-    return result;
-}
-struct card* interleave5(struct card *first, struct card *second){
-    struct card *temp = NULL;
-    struct card *result = NULL;
-
-    result = first;
-    temp = first;
-
-    for (int i = 0; i < 52; ++i) {
-        temp = temp->next;
-        temp->next = second;
-        temp = second;
-        temp = temp->next;
-        temp->next = first;
-        temp = first;
-    }
-    temp->next = result;
-    return result;
-}
-
-struct card* interleave4(struct card *first, struct card *second){
-    struct card *temp = NULL;
-    struct card *result = NULL;
-
-    result = first;
-    temp = first;
-
-    while (temp ->next != first)
-        temp = temp->next;
-    temp->next = second;
-    temp = second;
-    while (temp->next != second)
-        temp = temp->next;
-    temp->next =result;
-    return result;
-}
 
 
 /* first, split the list in half; second, shuffle the elements together. */
@@ -383,9 +334,9 @@ void shuffleList(card** stack){
     printf("second half\n");
     printList(head2);
 
-    head = interleave5(head1,head2);
+    //head = merge(head1, (struct card **) head2);
     //merge(head2,&head1);
-    //interleave4(head1,head2);
+    head = interleave(head1,head2);
     printf("\n\n");
     printf("merged \n");
     printList(head);
