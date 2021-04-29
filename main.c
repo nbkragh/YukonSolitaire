@@ -3,34 +3,62 @@
 #include <string.h>
 #include "CardFunctions.h"
 
-#define MAXCHAR 1000
 
-
+void printBoard(void);
+void prepareShowStack(card* );
+card* C[7];
+card* stack = NULL;
 
 int main(){
     setbuf(stdout, 0);
-    element* C[7];
-    card* newCard = (card*)malloc(sizeof(card));
+    for (size_t i = 0; i < 7; i++) //populate C[]
+    {
+        C[i] = (card*)(malloc(sizeof(card)));
+        C[i]->next = NULL;
+    }
+    // element* newCard = (element*)malloc(sizeof(card));
 
-    element* stack = NULL;
-    top(stack);
-    stack = (element*)(malloc(sizeof(element)));
     cardsFromFile(&stack);
+
+    prepareShowStack(stack);
+    printBoard();
     displayGame();
-    // for(int i = 0; i < 7; i++){
-    //     C[i] = malloc(sizeof(struct element));
-    //     C[i]->next = (struct element*)malloc(sizeof(struct element));
-    //     newCard->value = i;
-    //     strcpy(newCard->name , "AA");
-    //     newCard->shown = 0;
-    //     C[i]->data = *newCard;
-    // }
-    // for(int i = 0; i < 7; i++){
-    //     printf(" %d %s %d", (C[i]->data).value, (C[i]->data).name, (C[i]->data).shown);
-    // }
-    // FILE* inStream = fopen("defaultDeck.txt","r");
-    // char str[200];
-    // if (!inStream) { printf( "Fejl i fil stream læsning");}
-    // while(fgets(str, 200, inStream)) printf("%s", str);
-    // fclose(inStream);
+}
+
+void prepareShowStack(card* s){
+    card* currentCard = s;
+    for (size_t i = 0; i < 52; i++){ //kan antage at stack.length er 52 pga. input validering
+
+        push(&C[i % 7], createCard(currentCard->name));  //kopiér kort fra stack (createCard() ) og pladsér i C[i] listen
+        currentCard = currentCard->next;
+    }
+    free(currentCard);
+    currentCard = NULL;
+}
+
+/**
+ *
+ */
+void printBoard(){
+    card* copyC[7];
+    for (size_t i = 0; i < 7; i++)
+    {
+        copyC[i] = C[i];
+    }
+
+    printf("\nC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
+
+    for (size_t i = 0; i < 52; i++){ //kan antage at stack.length er 52 pga. input validering
+
+        printf("%s\t", copyC[i % 7]->name);
+
+        copyC[i % 7] = copyC[i % 7]->next;
+
+        if((((i+1) % 7) == 0)){
+            printf("\n");
+        }
+    }
+
+    //free(copyC);
+    //copyC == NULL;
 }
