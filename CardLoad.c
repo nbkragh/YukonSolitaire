@@ -97,11 +97,11 @@ void LoadCard(char* input, element** stack){
 void cardsFromFile( element** stack){
     FILE *fp;
     char str[4];
-    char* filename = "..\\Cards.txt";
+    char* filename = "..\\defaultDeck.txt";
 
     fp = fopen(filename, "r");
     if (fp == NULL){
-        filename = "Cards.txt"; // prøv at kigge efter filen i samme mappe stedet for
+        filename = "defaultDeck.txt"; // prøv at kigge efter filen i samme mappe stedet for
         fp = fopen(filename, "r");
         if (fp == NULL){
             printf("Could not open file %s\n", filename);
@@ -123,6 +123,11 @@ void cardsFromFile( element** stack){
 //    while (fgets(str, MAXCHAR, fp) != NULL)
 //        printf("%s\n", str);
     fclose(fp);
+
+
+}
+
+void cardsToFile(struct element** stack){
 
 
 }

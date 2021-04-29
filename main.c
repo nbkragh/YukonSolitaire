@@ -28,7 +28,7 @@ int main(){
     // for(int i = 0; i < 7; i++){
     //     printf(" %d %s %d", (C[i]->data).value, (C[i]->data).name, (C[i]->data).shown);
     // }
-    // FILE* inStream = fopen("Cards.txt","r"); 
+    // FILE* inStream = fopen("defaultDeck.txt","r");
     // char str[200];
     // if (!inStream) { printf( "Fejl i fil stream læsning");}
     // while(fgets(str, 200, inStream)) printf("%s", str);
