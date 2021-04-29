@@ -240,79 +240,27 @@ void cardsFromFile(card** stack){
 
 
 
-
 struct card* interleave(struct card *first, struct card *second){
 
+    for (int i = 0; i < 25; ++i) {
 
-
-    struct card* whatToReturn = first;
-    struct card* temp = first;
-//    first->next = second;
-//    for (int i = 0; i < 13; ++i) {
-
-        first = first->next;
-        first->next = temp->next;
-        first = first->next;
-        first->next = second->next;
         second = second->next;
-        temp = temp->next;
-
-//    }
-
-  return first;
-
-    /*struct card* tempFirst = NULL;
-    struct card* tempSecond = NULL;
-
-
-    tempFirst = first;
-    tempSecond = second;
-
-    for (int i = 0; i < 26; ++i) {
-        tempFirst->next = tempSecond;
-        tempSecond->prev = tempFirst;
-        tempFirst = first->next;
-        tempSecond = second->next;
+        second->prev->prev = first;
+        second->prev->next = first->next;
+        first->next = second->prev;
+        first = first->next->next;
+        first->prev = second->prev;
 
     }
-    return
-*/
+    second->prev = first;
+    second->next = first->next;
+    first->next = second;
 
+    first = first->next->next;
 
-//    struct card *temp = NULL;
-//    struct card *result = NULL;
-//
-//    result = first;
-//    temp = first;
-//
-//    for (int i = 0; i < 52; ++i) {
-//        temp = temp->next;
-//        temp->next = second;
-//        temp = second;
-//        temp = temp->next;
-//        temp->next = first;
-//        //temp = first;
-//    }
-//    temp->next = result;
-//    return result;
+    return first;
 }
-//
-//struct card* interleave4(struct card *first, struct card *second){
-//    struct card *temp = NULL;
-//    struct card *result = NULL;
-//
-//    result = first;
-//    temp = first;
-//
-//    while (temp ->next != first)
-//        temp = temp->next;
-//    temp->next = second;
-//    temp = second;
-//    while (temp->next != second)
-//        temp = temp->next;
-//    temp->next =result;
-//    return result;
-//}
+
 
 
 /* first, split the list in half; second, shuffle the elements together. */
