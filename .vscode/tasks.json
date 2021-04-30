@@ -9,6 +9,7 @@
 				"-g",
 				"${file}",
 				"${fileDirname}\\CardLoad.c",
+				"${fileDirname}\\GameDisplay.c",
 				"-o",
 				"${fileDirname}\\${fileBasenameNoExtension}.exe"
 			],

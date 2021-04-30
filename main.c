@@ -126,7 +126,3 @@ void printBoard() {
     }
 }
 
-int main(){
-
-
-}
