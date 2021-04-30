@@ -40,6 +40,16 @@ int main() {
 
     dealToCStacks(stack);
     printBoard();
+
+	setbuf(stdout, 0);
+
+    card* newCard = (card*)malloc(sizeof(card));
+
+    stack = NULL;
+    top(stack);
+    stack = (card*)(malloc(sizeof(card)));
+    cardsFromFile(&stack);
+    displayGame();
 }
 
 // fordeler den originale stak af kort ud på C stakkene, så alle kortene
@@ -115,30 +125,8 @@ void printBoard() {
 		f++;
     }
 }
-// void printBoard(){
-//     card* copyC[7];
-//     for (size_t i = 0; i < 7; i++)
-//     {
-//         copyC[i] = C[i];
-//     }
 
-//     printf("\nC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
+int main(){
 
-//     for (size_t i = 0; i < 52; i++){ //kan antage at stack.length er 52 pga.
-//     input validering
-//         if(copyC[i % 7] == C[i % 7] && i > 6){ //hvis alle kortene i
-//         C-stakken allerede er printet så print intet
-//             printf("\t");
 
-//         }else{
-//             printf("%s\t", copyC[i % 7]->name);
-//             copyC[i % 7] = copyC[i % 7]->next;
-//         }
-//         if((((i+1) % 7) == 0)){//hvis det er C7, så skift linie
-//             printf("\n");
-//         }
-//     }
-
-//     //free(copyC);
-//     //copyC = NULL;
-// }
+}
