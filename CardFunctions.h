@@ -32,6 +32,7 @@ void top (card*);
 void shuffleList(card**);
 card* createCard(char*);
 void push(card **, card*);
+card* emptyStack(card* );
 
 #endif //YUKONSOLITAIRE_CARDFUNCTIONS_H
 

@@ -48,11 +48,14 @@ card* createCard(char* input){ // create nyt kort fra string
     ptr1->suit = suitFromCardName(input);
     strcpy(ptr1->name, input);
     ptr1->shown = 1;
+	ptr1->next = ptr1;
+	ptr1->prev = ptr1;
     return ptr1;
 }
 
+
 void push(card **start, card* inCard){
-    if (*start == NULL || (*start)->next == NULL || (*start)->next == NULL ){
+    if (*start == NULL || (*start)->next == NULL || (*start)->prev == NULL ){
         inCard->next = inCard->prev = inCard;
         *start = inCard;
         return;
@@ -101,6 +104,21 @@ int countNodes(struct card* head)
     }
 
     return result;
+}
+// returnerer et ny head til den tømte stack 
+card* emptyStack(card* stack){
+   card* nextS;
+   char count = countNodes(stack);
+   for (size_t i = 0; i < count; i++)
+   {
+	   nextS = stack->next;
+	   free(stack);
+	   stack = nextS;
+   }
+   card* returner = (card *)(malloc(sizeof(card)));
+   returner->next = returner->prev = NULL;
+   return returner;
+   
 }
 
 /* Function to print nodes in a given Circular linked list */
