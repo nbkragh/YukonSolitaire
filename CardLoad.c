@@ -105,7 +105,7 @@ int countNodes(struct card* head)
 
     return result;
 }
-// returnerer et ny head til den tømte stack 
+// returnerer et nyt head til den tømte stack 
 card* emptyStack(card* stack){
    card* nextS;
    char count = countNodes(stack);
@@ -185,38 +185,6 @@ void splitList(struct card *head, struct card **head1_ref, struct card **head2_r
     slow_ptr->next = head;
 }
 
-void LoadCard(char* input, card** stack){
-    //card* root = ( card*) malloc(sizeof ( card));
-    //root ->data = *newCard;
-    //root ->next = NULL;
-    //printf("input: %s", input);
-    //card* newCard = (card *)malloc(sizeof(card));
-    //newCard->value = valueFromCardName(input);
-    //newCard->suit = suitFromCardName(input);
-
-    //strcpy(newCard->name, input); // kopier string ind i newCard->name
-    //printf("newcard->name: %s \n", newCard->name);
-    //newCard->shown = 1;
-
-//    card* newElement = ( card*) malloc(sizeof ( card));
-//    newElement->value = valueFromCardName(input);
-//    newElement->suit = suitFromCardName(input);
-//    strcpy(newElement->name,input);
-//    newElement->shown = 1;
-
-    //newElement->data = *newCard;
-    //printf("newcard->data.name: %s \n", newElement->data.name);
-    //newElement->next = NULL;
-    //for (int i = 0; i < 10; ++i) {
-        push(stack,createCard(input));
-        //top(*stack);
-    //}
-//    free(newCard);
-//    newCard = NULL;
-//    free(newElement);
-//    newElement = NULL;
-}
-
 void cardsFromFile(card** stack){
     FILE *fp;
     char str[4];
@@ -235,23 +203,12 @@ void cardsFromFile(card** stack){
         for (int j = 0; j < 13; ++j) {
             if (fgets(str, 4, fp) != NULL){
                 str[strlen(str)-1] = '\0';
-                LoadCard(str, stack);
+                push(stack,createCard(str));
             }
         }
     }
-
-//    while (fgets(str, MAXCHAR, fp) != NULL)
-//        printf("%s\n", str);
-    //shuffleList((card **) &stack);
     fclose(fp);
-
-
 }
-
-
-
-
-
 
 struct card* interleave(struct card *first, struct card *second){
 
@@ -273,8 +230,6 @@ struct card* interleave(struct card *first, struct card *second){
 
     return first;
 }
-
-
 
 /* first, split the list in half; second, shuffle the elements together. */
 void shuffleList(card** stack){
@@ -310,5 +265,75 @@ void shuffleList(card** stack){
 
 
     //printList((struct card *) stack);
+}
+
+int fromStackToOther(char* name, card** from, card** to, char* fromType, char* toType){
+	
+	char countFrom = countNodes(*from);
+	card* cardWithName = NULL;
+	card* fromCopy = *from;
+
+	if(countFrom == 0){
+		return -1; //ingen kort i from stack
+	}
+	for (size_t i = 0; i < countFrom; i++){
+		//finder kortet der skal flyttes fra "from" stakken
+		if(strcmp(fromCopy->name, name) == 0){
+			cardWithName = fromCopy;
+		}
+		fromCopy = fromCopy->next;
+	}
+	fromCopy = fromCopy->prev; // gemmer sidste kort i stakken til senere
+	if(cardWithName == NULL){
+		return -2; //kort fandtes ikke i stakken 
+	}
+	if(strcmp(fromType , "F") == 0 || strcmp(toType , "F") == 0){
+		if(cardWithName != (*from)->prev){
+			return -3; //kun øverste kort kan flyttes fra eller til en F[] stak
+		}
+	}
+	
+	char countTo = countNodes(*to);
+
+	if(countTo > 0){
+		if(strcmp(toType , "F") == 0 && (
+			cardWithName->value != ((*to)->prev->value)+1 ||
+			cardWithName->suit != (*to)->prev->suit) ){
+			return -4;  //kortet var ikke 1 større end toppen af F[] stakken 
+						//eller havde ikke samme kulør
+		}
+		if( strcmp(toType , "C") == 0 && 
+			(cardWithName->value != ((*to)->prev->value)-1 ||
+			cardWithName->suit == ((*to)->prev->suit)) ){
+			return -5; 	//kortet var ikke 1 mindre end bunden af C[] stakken 
+						//eller havde samme kulør
+		}
+
+	}
+	
+// ALT TJEKKET - READY TO GO
+
+	if(countFrom == 1){
+		*from = NULL; //tømmer stakken
+	}else{
+		cardWithName->prev->next = *from; // binder from stakken sammen efter fjernet et kort
+		
+		(*from)->prev= cardWithName->prev;
+		if((*from)->prev->shown == 0) (*from)->prev->shown = 1; 
+	}
+
+	if( countTo == 0){
+		*to = cardWithName;
+		(*to)->prev = (*to)->next = *to;
+	}else{
+		cardWithName->prev = (*to)->prev; //linker nye kort til "to" stakken
+		fromCopy->next = *to;
+		
+		(*to)->prev->next = cardWithName; // linker "to" stakken til nye kort
+		(*to)->prev = fromCopy;
+		
+	
+	}
+	return 0;
 }
 

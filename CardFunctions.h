@@ -17,6 +17,8 @@
 //    int key;
 //    struct card* next;
 //} card;
+
+
 typedef struct card {
     int  value;     // værdien 1-13 (A1..10JQK)
     int shown;      // boolean for synlig / ikke synlig
@@ -25,6 +27,13 @@ typedef struct card {
     struct card *next;
     struct card *prev;
 } card;
+
+// "GLOBAL VARIABLES" 
+card *C[7];
+card *F[4];
+card *stack;
+char play; // er programmet i Game-state eller ej?
+
 void LoadCard(char *, card**);
 void cardsFromFile(card**);
 int displayGame(void);
@@ -33,6 +42,10 @@ void shuffleList(card**);
 card* createCard(char*);
 void push(card **, card*);
 card* emptyStack(card* );
-
+int fromStackToOther(char*, card**, card**, char*, char*);
+int displayGame(void);
+void printBoard(void);
+void displayAllCards(char);
+void dealCardsToGame(card* );
 #endif //YUKONSOLITAIRE_CARDFUNCTIONS_H
 
