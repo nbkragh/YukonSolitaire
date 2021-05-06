@@ -258,7 +258,7 @@ struct card* randomShuffle(struct card* stack){
 }
 
 /* first, split the list in half; second, shuffle the elements together. */
-void shuffleList(card** stack){
+struct card* shuffleList(card** stack){
     if (* stack == NULL) return;
     struct card *head = NULL;
     struct card *head1 = NULL;
@@ -280,6 +280,7 @@ void shuffleList(card** stack){
 //    printf("merged \n");
 //    printList(head);
 
+    return head;
 
 }
 

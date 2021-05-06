@@ -29,7 +29,8 @@ void LoadCard(char *, card**);
 void cardsFromFile(card**);
 void displayGame(void);
 void top (card*);
-void shuffleList(card**);
+struct card* shuffleList(card**);
+struct card* randomShuffle(struct card* stack){
 
 #endif //YUKONSOLITAIRE_CARDFUNCTIONS_H
 
