@@ -46,10 +46,11 @@ int main() {
 
     stack = NULL;
     top(stack);
+	*/
     stack = (card*)(malloc(sizeof(card)));
     cardsFromFile(&stack);
     displayGame();
-*/
+
 }
 
 
