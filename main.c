@@ -121,6 +121,11 @@ int main() {
         else if (strcmp(command, "SL") == 0){
             printf("SPLITTING CARDS FROM: %s\n\n", parameter);
             strcpy(returnMsg, "OK");
+            shuffleList(&stack);
+            for (size_t j = 0; j < 7; j++) {
+                C[j] = emptyStack(C[j]);
+            }
+            prepareShowStack(stack, 0);
         }
         else if (strcmp(command, "SR") == 0){
             if (strcmp(parameter,"") == 0){
