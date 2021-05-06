@@ -56,7 +56,7 @@ int main() {
     char tInput[inputSize] = "",lastCommand[inputSize] = "";
     char command[3]="",parameter[25]="";
     char *pTokens[2];
-    int i;
+    int i, gameState = 0;
 
     while (strcmp(tInput, "QQ") != 0) {
         printBoard();
@@ -95,51 +95,83 @@ int main() {
         for(int j = 0; command[j]; j++){
             command[j] = toupper(command[j]);
         }
-
-        // Looks through all the commands and executes the commands accordingly
-        if (strcmp(command, "LD") == 0){
-            printf("LOADING CARDS FROM: %s\n\n", parameter);
-            strcpy(returnMsg, "OK");
-            cardsFromFile(&stack);
-            prepareShowStack(stack, 0);
-        }
-        else if (strcmp(command, "SW") == 0){
-            // Checks if the command SW has a parameter entered, if it has it will return an error.
-            // If not it will run the command.
-            if (strcmp(parameter,"") == 0){
-                printf("SHOWING CARDS\n\n");
+        if(gameState == 0) {
+            // Looks through all the commands and executes the commands accordingly
+            if (strcmp(command, "LD") == 0) {
+                printf("LOADING CARDS FROM: %s\n\n", parameter);
                 strcpy(returnMsg, "OK");
+                emptyDisplayColumns();
+                cardsFromFile(&stack);
+                prepareShowStack(stack, 0);
+            } else if (strcmp(command, "SW") == 0) {
+                // Checks if the command SW has a parameter entered, if it has it will return an error.
+                // If not it will run the command.
+                if (strcmp(parameter, "") == 0) {
+                    printf("SHOWING CARDS\n\n");
+                    strcpy(returnMsg, "OK");
 
-                turnAllCards();
-            } else {
-                //strcpy(returnMsg, "Command (SW) does not have a parameter!");
-                noParameterMsg(command);
-                pTokens[1] = "";
-            }
+                    turnAllCards();
+                } else {
+                    //strcpy(returnMsg, "Command (SW) does not have a parameter!");
+                    noParameterMsg(command);
+                    pTokens[1] = "";
+                }
 
-        }
-        else if (strcmp(command, "SL") == 0){
-            printf("SPLITTING CARDS FROM: %s\n\n", parameter);
-            strcpy(returnMsg, "OK");
-            shuffleList(&stack);
-            for (size_t j = 0; j < 7; j++) {
-                C[j] = emptyStack(C[j]);
-            }
-            prepareShowStack(stack, 0);
-        }
-        else if (strcmp(command, "SR") == 0){
-            if (strcmp(parameter,"") == 0){
-                printf("SHUFFLING THE CARDS\n\n");
+            } else if (strcmp(command, "SL") == 0) {
+                printf("SPLITTING CARDS FROM: %s\n\n", parameter);
                 strcpy(returnMsg, "OK");
-            } else {
-                noParameterMsg(command);
-                pTokens[1] = "";
-            }
+                shuffleList(&stack);
+                emptyDisplayColumns();
+                prepareShowStack(stack, 0);
+            } else if (strcmp(command, "SR") == 0) {
+                if (strcmp(parameter, "") == 0) {
+                    printf("SHUFFLING THE CARDS\n\n");
+                    strcpy(returnMsg, "OK");
+                    randomShuffle(stack);
+                    emptyDisplayColumns();
 
+                    prepareShowStack(stack, 0);
+
+                } else {
+                    noParameterMsg(command);
+                    pTokens[1] = "";
+                }
+
+            } else if (strcmp(command, "P") == 0) {
+                if (strcmp(parameter, "") == 0) {
+                    printf("PREPARING GAME\n\n");
+                    strcpy(returnMsg, "OK");
+                    emptyDisplayColumns();
+                    dealCardsToGame(stack);
+                    gameState = 1;
+
+                } else {
+                    noParameterMsg(command);
+                    pTokens[1] = "";
+                }
+
+            } else {
+                strcpy(returnMsg, "COMMAND NOT FOUND");
+            }
+        } else if (gameState == 1) {
+            if (strcmp(command, "Q") == 0) {
+                if (strcmp(parameter, "") == 0) {
+                    printf("Quitting current game\n\n");
+                    strcpy(returnMsg, "OK");
+                    gameState = 0;
+
+                } else {
+                    noParameterMsg(command);
+                    pTokens[1] = "";
+                }
+
+            } else {
+                strcpy(returnMsg, "Game is started");
+            }
         }
-        else{
-            strcpy(returnMsg,"COMMAND NOT FOUND");
-        }
+
+
+
     }
 
 

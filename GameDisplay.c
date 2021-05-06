@@ -167,7 +167,12 @@ void dealCardsToGame(card *s) {
         }
     }
 
+}
 
+void emptyDisplayColumns(){
+    for (size_t j = 0; j < 7; j++) {
+        C[j] = emptyStack(C[j]);
+    }
 }
 
 void printBoard() {

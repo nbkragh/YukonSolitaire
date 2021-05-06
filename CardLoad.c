@@ -234,8 +234,8 @@ struct card* interleave(struct card *first, struct card *second){
     return first;
 }
 
-struct card* randomShuffle(struct card* stack){
-    struct card *head = NULL;
+struct card* randomShuffle(struct card* head){
+    //struct card *head = NULL;
     struct card *head1 = NULL;
     struct card *head2 = NULL;
 

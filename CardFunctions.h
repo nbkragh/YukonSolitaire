@@ -54,6 +54,7 @@ void dealCardsToGame(card* );
 void prepareShowStack(card *s, char shown);
 void turnAllCards();
 int countNodes(struct card* head);
+void emptyDisplayColumns();
 
 #endif //YUKONSOLITAIRE_CARDFUNCTIONS_H
 
