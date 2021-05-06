@@ -33,6 +33,7 @@ void shuffleList(card**);
 card* createCard(char*);
 void push(card **, card*);
 void cardsToFile(struct card *cards, char* filename);
+card* emptyStack(card* );
 
 #endif //YUKONSOLITAIRE_CARDFUNCTIONS_H
 
