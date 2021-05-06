@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "CardFunctions.h"
 
 
 int main() {
 	/*
     // populate C[]
+
     for (size_t i = 0; i < 7; i++) {
         C[i] = (card *)(malloc(sizeof(card)));
 		C[i]->next = C[i]->prev = NULL;
@@ -17,6 +17,7 @@ int main() {
         F[i] = (card *)(malloc(sizeof(card)));
 		F[i]->next = F[i]->prev = NULL;
 	}
+
 
     cardsFromFile(&stack);
 
@@ -35,7 +36,10 @@ int main() {
 
     dealToCStacks(stack);
     printBoard();
-*/
+    cardsToFile(stack, NULL);
+    displayGame();
+
+
 	setbuf(stdout, 0);
 
     card* newCard = (card*)malloc(sizeof(card));
@@ -45,7 +49,7 @@ int main() {
     stack = (card*)(malloc(sizeof(card)));
     cardsFromFile(&stack);
     displayGame();
-
+*/
 }
 
 

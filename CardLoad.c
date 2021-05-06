@@ -105,7 +105,7 @@ int countNodes(struct card* head)
 
     return result;
 }
-// returnerer et nyt head til den tømte stack 
+// returnerer et ny head til den tømte stack
 card* emptyStack(card* stack){
    card* nextS;
    char count = countNodes(stack);
@@ -118,7 +118,7 @@ card* emptyStack(card* stack){
    card* returner = (card *)(malloc(sizeof(card)));
    returner->next = returner->prev = NULL;
    return returner;
-   
+
 }
 
 /* Function to print nodes in a given Circular linked list */
@@ -208,6 +208,33 @@ void cardsFromFile(card** stack){
         }
     }
     fclose(fp);
+}
+
+void cardsToFile(struct card *cards, char* filename){
+    FILE *fwrite;
+    char* dFilename = "..\\cards.txt";
+
+    if (filename == NULL){
+        filename = dFilename;
+    }
+
+    fwrite = fopen(filename,"w");
+
+    if (fwrite){
+
+        for (int i = 0; i < 52; ++i) {
+
+            fputs(cards->name, fwrite);
+            fputs("\n",fwrite);
+            cards = cards->next;
+        }
+
+    }
+    else{
+        printf("Failed to open file\n");
+    }
+    fclose(fwrite);
+
 }
 
 struct card* interleave(struct card *first, struct card *second){
