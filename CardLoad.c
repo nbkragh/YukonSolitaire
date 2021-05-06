@@ -258,7 +258,6 @@ struct card* randomShuffle(struct card* stack){
 
 /* first, split the list in half; second, shuffle the elements together. */
 struct card* shuffleList(card** stack){
-    if (* stack == NULL) return;
     struct card *head = NULL;
     struct card *head1 = NULL;
     struct card *head2 = NULL;
