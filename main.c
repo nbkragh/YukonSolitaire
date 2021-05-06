@@ -21,8 +21,11 @@ int main(){
     cardsFromFile(&stack);
 
     prepareShowStack(stack);
+
     printBoard();
+    cardsToFile(stack, NULL);
     displayGame();
+
 }
 
 void prepareShowStack(card* s){

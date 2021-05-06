@@ -230,8 +230,30 @@ void cardsFromFile(card** stack){
 
 }
 
-void cardsToFile(struct element** stack){
+void cardsToFile(struct card *cards, char* filename){
+    FILE *fwrite;
+    char* dFilename = "..\\cards.txt";
 
+    if (filename == NULL){
+        filename = dFilename;
+    }
+
+    fwrite = fopen(filename,"w");
+
+    if (fwrite){
+
+        for (int i = 0; i < 52; ++i) {
+
+            fputs(cards->name, fwrite);
+            fputs("\n",fwrite);
+            cards = cards->next;
+        }
+
+    }
+    else{
+        printf("Failed to open file\n");
+    }
+    fclose(fwrite);
 
 }
 

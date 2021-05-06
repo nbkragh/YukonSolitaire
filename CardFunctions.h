@@ -27,11 +27,12 @@ typedef struct card {
 } card;
 void LoadCard(char *, card**);
 void cardsFromFile(card**);
-void displayGame(void);
+int displayGame(void);
 void top (card*);
 void shuffleList(card**);
 card* createCard(char*);
 void push(card **, card*);
+void cardsToFile(struct card *cards, char* filename);
 
 #endif //YUKONSOLITAIRE_CARDFUNCTIONS_H
 
