@@ -6,31 +6,30 @@
 #include <stdlib.h>
 #include "CardFunctions.h"
 #include <string.h>
+#include <ctype.h>
 #include <mmcobj.h>
 #include <time.h>
 
-#define MAXCHAR 1000
+//#define MAXCHAR 1000
 
 
 
 int valueFromCardName(char* name){
-    switch (*name)
+    switch (toupper(*name))
     {
     case 'A':
-    case 'a':
         return 1;
+    case 'T':
+        return 10;
     case 'J':
-    case 'j':
         return 11;
     case 'Q':
-    case 'q':
         return 12;
     case 'K':
-    case 'k':
         return 13;
     default:
         if( 48<(int)*name<58 ){
-            return (int)*name;
+            return ((int)*name)-48;
         }else{
             return -1; // error ! 
         };
@@ -41,30 +40,31 @@ int valueFromCardName(char* name){
 char suitFromCardName(char* name){
     return *(name+1);
 }
-void push(struct card **start, char* input){
-    if (*start == NULL){
-        struct card *ptr1 = (struct card *)malloc(sizeof(struct card));
-        ptr1->value = valueFromCardName(input);
-        ptr1->suit = suitFromCardName(input);
-        strcpy(ptr1->name, input);
-        ptr1->shown = 1;
-
-        ptr1->next = ptr1->prev = ptr1;
-        *start = ptr1;
-        return;
-    }
-
-    card *last = (*start) ->prev;
-    struct card *ptr1 = (struct card *)malloc(sizeof(struct card));
+card* createCard(char* input){ // create nyt kort fra string
+    
+    struct card *ptr1 = (card *)malloc(sizeof(card));
     ptr1->value = valueFromCardName(input);
     ptr1->suit = suitFromCardName(input);
     strcpy(ptr1->name, input);
     ptr1->shown = 1;
+	ptr1->next = ptr1;
+	ptr1->prev = ptr1;
+    return ptr1;
+}
 
-    ptr1->next = *start;
-    (*start)->prev = ptr1;
-    ptr1->prev = last;
-    last->next = ptr1;
+
+void push(card **start, card* inCard){
+    if (*start == NULL || (*start)->next == NULL || (*start)->prev == NULL ){
+        inCard->next = inCard->prev = inCard;
+        *start = inCard;
+        return;
+    }
+    card *last = (*start) ->prev;
+
+    inCard->next = *start;
+    (*start)->prev = inCard;
+    inCard->prev = last;
+    last->next = inCard;
 }
 
 
@@ -81,6 +81,21 @@ int countNodes(struct card* head)
     }
 
     return result;
+}
+// returnerer et ny head til den tømte stack
+card* emptyStack(card* stack){
+   card* nextS;
+   char count = countNodes(stack);
+   for (size_t i = 0; i < count; i++)
+   {
+	   nextS = stack->next;
+	   free(stack);
+	   stack = nextS;
+   }
+   card* returner = (card *)(malloc(sizeof(card)));
+   returner->next = returner->prev = NULL;
+   return returner;
+
 }
 
 /* Function to print nodes in a given Circular linked list */
@@ -147,46 +162,14 @@ void splitList(struct card *head, struct card **head1_ref, struct card **head2_r
     slow_ptr->next = head;
 }
 
-void LoadCard(char* input, card** stack){
-    //card* root = ( card*) malloc(sizeof ( card));
-    //root ->data = *newCard;
-    //root ->next = NULL;
-    //printf("input: %s", input);
-    //card* newCard = (card *)malloc(sizeof(card));
-    //newCard->value = valueFromCardName(input);
-    //newCard->suit = suitFromCardName(input);
-
-    //strcpy(newCard->name, input); // kopier string ind i newCard->name
-    //printf("newcard->name: %s \n", newCard->name);
-    //newCard->shown = 1;
-
-//    card* newElement = ( card*) malloc(sizeof ( card));
-//    newElement->value = valueFromCardName(input);
-//    newElement->suit = suitFromCardName(input);
-//    strcpy(newElement->name,input);
-//    newElement->shown = 1;
-
-    //newElement->data = *newCard;
-    //printf("newcard->data.name: %s \n", newElement->data.name);
-    //newElement->next = NULL;
-    //for (int i = 0; i < 10; ++i) {
-        push(stack,input);
-        top(*stack);
-    //}
-//    free(newCard);
-//    newCard = NULL;
-//    free(newElement);
-//    newElement = NULL;
-}
-
 void cardsFromFile(card** stack){
     FILE *fp;
     char str[4];
-    char* filename = "..\\Cards.txt";
+    char* filename = "..\\defaultDeck.txt";
 
     fp = fopen(filename, "r");
     if (fp == NULL){
-        filename = "Cards.txt"; // prøv at kigge efter filen i samme mappe stedet for
+        filename = "defaultDeck.txt"; // prøv at kigge efter filen i samme mappe stedet for
         fp = fopen(filename, "r");
         if (fp == NULL){
             printf("Could not open file %s\n", filename);
@@ -196,26 +179,40 @@ void cardsFromFile(card** stack){
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 13; ++j) {
             if (fgets(str, 4, fp) != NULL){
-                //printf("from file: %s \t", str);
                 str[strlen(str)-1] = '\0';
-                LoadCard(str, stack);
+                push(stack,createCard(str));
             }
         }
-        //printf("\n");
     }
-
-//    while (fgets(str, MAXCHAR, fp) != NULL)
-//        printf("%s\n", str);
-    //shuffleList((card **) &stack);
     fclose(fp);
-
-
 }
 
+void cardsToFile(struct card *cards, char* filename){
+    FILE *fwrite;
+    char* dFilename = "..\\cards.txt";
 
+    if (filename == NULL){
+        filename = dFilename;
+    }
 
+    fwrite = fopen(filename,"w");
 
+    if (fwrite){
 
+        for (int i = 0; i < 52; ++i) {
+
+            fputs(cards->name, fwrite);
+            fputs("\n",fwrite);
+            cards = cards->next;
+        }
+
+    }
+    else{
+        printf("Failed to open file\n");
+    }
+    fclose(fwrite);
+
+}
 
 struct card* interleave(struct card *first, struct card *second){
 
@@ -280,5 +277,75 @@ struct card* shuffleList(card** stack){
 
     return head;
 
+}
+
+int fromStackToOther(char* name, card** from, card** to, char* fromType, char* toType){
+	
+	char countFrom = countNodes(*from);
+	card* cardWithName = NULL;
+	card* fromCopy = *from;
+
+	if(countFrom == 0){
+		return -1; //ingen kort i from stack
+	}
+	for (size_t i = 0; i < countFrom; i++){
+		//finder kortet der skal flyttes fra "from" stakken
+		if(strcmp(fromCopy->name, name) == 0){
+			cardWithName = fromCopy;
+		}
+		fromCopy = fromCopy->next;
+	}
+	fromCopy = fromCopy->prev; // gemmer sidste kort i stakken til senere
+	if(cardWithName == NULL){
+		return -2; //kort fandtes ikke i stakken 
+	}
+	if(strcmp(fromType , "F") == 0 || strcmp(toType , "F") == 0){
+		if(cardWithName != (*from)->prev){
+			return -3; //kun øverste kort kan flyttes fra eller til en F[] stak
+		}
+	}
+	
+	char countTo = countNodes(*to);
+
+	if(countTo > 0){
+		if(strcmp(toType , "F") == 0 && (
+			cardWithName->value != ((*to)->prev->value)+1 ||
+			cardWithName->suit != (*to)->prev->suit) ){
+			return -4;  //kortet var ikke 1 større end toppen af F[] stakken 
+						//eller havde ikke samme kulør
+		}
+		if( strcmp(toType , "C") == 0 && 
+			(cardWithName->value != ((*to)->prev->value)-1 ||
+			cardWithName->suit == ((*to)->prev->suit)) ){
+			return -5; 	//kortet var ikke 1 mindre end bunden af C[] stakken 
+						//eller havde samme kulør
+		}
+
+	}
+	
+// ALT TJEKKET - READY TO GO
+
+	if(countFrom == 1){
+		*from = NULL; //tømmer stakken
+	}else{
+		cardWithName->prev->next = *from; // binder from stakken sammen efter fjernet et kort
+		
+		(*from)->prev= cardWithName->prev;
+		if((*from)->prev->shown == 0) (*from)->prev->shown = 1; 
+	}
+
+	if( countTo == 0){
+		*to = cardWithName;
+		(*to)->prev = (*to)->next = *to;
+	}else{
+		cardWithName->prev = (*to)->prev; //linker nye kort til "to" stakken
+		fromCopy->next = *to;
+		
+		(*to)->prev->next = cardWithName; // linker "to" stakken til nye kort
+		(*to)->prev = fromCopy;
+		
+	
+	}
+	return 0;
 }
 

@@ -6,4 +6,5 @@ set(CMAKE_C_STANDARD 11)
 add_executable(YukonSolitaire
         main.c
         CardLoad.c
-        CardFunctions.h)
+        CardFunctions.h
+        GameDisplay.c)
