@@ -30,7 +30,7 @@ void cardsFromFile(card**);
 void displayGame(void);
 void top (card*);
 struct card* shuffleList(card**);
-struct card* randomShuffle(struct card* stack){
+struct card* randomShuffle(struct card* stack);
 
 #endif //YUKONSOLITAIRE_CARDFUNCTIONS_H
 
