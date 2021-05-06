@@ -28,15 +28,17 @@ typedef struct card {
     struct card *prev;
 } card;
 
-// "GLOBAL VARIABLES" 
+// "GLOBAL VARIABLES"
+#define inputSize 25
 card *C[7];
 card *F[4];
 card *stack;
 char play; // er programmet i Game-state eller ej?
 
+
+
 void LoadCard(char *, card**);
 void cardsFromFile(card**);
-int displayGame(void);
 void top (card*);
 struct card* shuffleList(card**);
 struct card* randomShuffle(struct card* stack);
@@ -45,9 +47,13 @@ void push(card **, card*);
 void cardsToFile(struct card *cards, char* filename);
 card* emptyStack(card* );
 int fromStackToOther(char*, card**, card**, char*, char*);
-int displayGame(void);
+int displayGame(char * tInput, char * lastCommand);
 void printBoard(void);
 void displayAllCards(char);
 void dealCardsToGame(card* );
+void prepareShowStack(card *s, char shown);
+void turnAllCards();
+int countNodes(struct card* head);
+
 #endif //YUKONSOLITAIRE_CARDFUNCTIONS_H
 
