@@ -242,7 +242,6 @@ struct card* randomShuffle(struct card* stack){
     struct card *head1 = NULL;
     struct card *head2 = NULL;
 
-    srand(time(0));
     int randomNum = rand() % 10000 + 3;
 
     // test a new random funktion
