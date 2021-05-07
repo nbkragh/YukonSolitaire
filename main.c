@@ -58,7 +58,7 @@ int main() {
     char *pTokens[2];
     int i, gameState = 0;
 
-    while (strcmp(tInput, "QQ") != 0) {
+    while (strcmp(command, "QQ") != 0) {
         printBoard();
         // iterator for pTokens pointer array.
         i = 0;
@@ -98,8 +98,8 @@ int main() {
         if(gameState == 0) {
             // Looks through all the commands and executes the commands accordingly
             if (strcmp(command, "LD") == 0) {
-                printf("LOADING CARDS FROM: %s\n\n", parameter);
-                strcpy(returnMsg, "OK");
+                //printf("LOADING CARDS FROM: %s\n\n", parameter);
+                strcpy(returnMsg, "OK - CARDS LOADED");
                 emptyDisplayColumns();
                 cardsFromFile(&stack);
                 prepareShowStack(stack, 0);
@@ -107,8 +107,8 @@ int main() {
                 // Checks if the command SW has a parameter entered, if it has it will return an error.
                 // If not it will run the command.
                 if (strcmp(parameter, "") == 0) {
-                    printf("SHOWING CARDS\n\n");
-                    strcpy(returnMsg, "OK");
+                    //printf("SHOWING CARDS\n\n");
+                    strcpy(returnMsg, "OK - SHOWING CARDS");
 
                     turnAllCards();
                 } else {
@@ -118,15 +118,16 @@ int main() {
                 }
 
             } else if (strcmp(command, "SL") == 0) {
-                printf("SPLITTING CARDS FROM: %s\n\n", parameter);
-                strcpy(returnMsg, "OK");
+                //printf("SPLITTING CARDS FROM: %s\n\n", parameter);
+                strcpy(returnMsg, "OK - CARD HAVE BEEN SPLIT");
                 shuffleList(&stack);
                 emptyDisplayColumns();
                 prepareShowStack(stack, 0);
+
             } else if (strcmp(command, "SR") == 0) {
                 if (strcmp(parameter, "") == 0) {
-                    printf("SHUFFLING THE CARDS\n\n");
-                    strcpy(returnMsg, "OK");
+                    //printf("SHUFFLING THE CARDS\n\n");
+                    strcpy(returnMsg, "OK - SHUFFLED THE CARDS");
                     randomShuffle(stack);
                     emptyDisplayColumns();
 
@@ -137,10 +138,23 @@ int main() {
                     pTokens[1] = "";
                 }
 
+            } else if (strcmp(command, "SD") == 0) {
+                if (strcmp(parameter, "") == 0) {
+                    //printf("\n\n");
+                    strcpy(returnMsg, "OK - SAVED CURRENT CARDS TO FILE");
+                    cardsToFile(stack, NULL);
+
+
+
+                } else {
+                    noParameterMsg(command);
+                    pTokens[1] = "";
+                }
+
             } else if (strcmp(command, "P") == 0) {
                 if (strcmp(parameter, "") == 0) {
-                    printf("PREPARING GAME\n\n");
-                    strcpy(returnMsg, "OK");
+                    //printf("PREPARING GAME\n\n");
+                    strcpy(returnMsg, "OK - GAME READY TO PLAY");
                     emptyDisplayColumns();
                     dealCardsToGame(stack);
                     gameState = 1;
@@ -156,8 +170,8 @@ int main() {
         } else if (gameState == 1) {
             if (strcmp(command, "Q") == 0) {
                 if (strcmp(parameter, "") == 0) {
-                    printf("Quitting current game\n\n");
-                    strcpy(returnMsg, "OK");
+                   // printf("Quitting current game\n\n");
+                    strcpy(returnMsg, "OK - QUIT CURRENT GAME");
                     gameState = 0;
 
                 } else {
