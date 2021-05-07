@@ -52,7 +52,13 @@ card* createCard(char* input){ // create nyt kort fra string
     return ptr1;
 }
 
-
+/**
+ * function to add a new node/card to the end of a stack. It also makes the last node point to the first node, and the first node's previous node point to the new node
+ * in order to make the linked list cyclic
+ * @author s186333 Stig Bødtker Petersen
+ * @param start - the current stack
+ * @param inCard - the new card to be added to the stack
+ */
 void push(card **start, card* inCard){
     if (*start == NULL || (*start)->next == NULL || (*start)->prev == NULL ){
         inCard->next = inCard->prev = inCard;
@@ -68,7 +74,12 @@ void push(card **start, card* inCard){
 }
 
 
-
+/**
+ * function to count the amount of nodes there are in a cyclic linked list
+ * @author s186333 Stig Bødtker Petersen
+ * @param head - the stack thats the be counted
+ * @return result - the int value for the amount of nodes in the given stack
+ */
 int countNodes(struct card* head)
 {
     struct card* temp = head;
@@ -97,8 +108,11 @@ card* emptyStack(card* stack){
    return returner;
 
 }
-
-/* Function to print nodes in a given Circular linked list */
+/**
+ * Function to print nodes/card name in a given Circular linked list
+ * @author s186333 Stig Bødtker Petersen
+ * @param head - the given stack to be printed
+ */
 void printList(struct card *head){
 
     //struct card *temp = head;
@@ -109,7 +123,11 @@ void printList(struct card *head){
     }
 
 }
-
+/**
+ * removes the top node in the given stack
+ * @author s186333 Stig Bødtker Petersen
+ * @param stack - the stack of cards
+ */
 void pop(card** stack){
 
     if (stack != NULL){
@@ -121,7 +139,11 @@ void pop(card** stack){
         printf("The Stack is empty.\n");
     }
 }
-
+/**
+ * prints the name of the card in the top of the stack
+ * @author s186333 Stig Bødtker Petersen
+ * @param stack - the stack of cards
+ */
 void top(card* stack){
     if (stack != NULL){
         printf("Element on top: %s\n", stack ->name);
@@ -129,6 +151,16 @@ void top(card* stack){
         printf("The Stack is empty.\n");
     }
 }
+/**
+ * function to split a linked list in two equal halves, and add each of the halves to a new linked list separately.
+ *
+ * The function sends two pointers ahead, one slow one fast, and when the fast reaches the end the slow pointer have reached the middle
+ * and then cuts the list from where the middle is.
+ * @author s186333 Stig Bødtker Petersen
+ * @param head - The original linked list with nodes/cards
+ * @param head1_ref - An empty linked list used to transfer the first half to
+ * @param head2_ref - An empty linked list used to transfer the second half to
+ */
 void splitList(struct card *head, struct card **head1_ref, struct card **head2_ref) {
     struct card *slow_ptr = head;
     struct card *fast_ptr = head;
@@ -225,7 +257,14 @@ void cardsToFile(struct card *cards, char* filename){
     fclose(fwrite);
 
 }
-
+/**
+ * Function to merge two linked list into one linked list in a interleaved manner (Ex: stack1= 1->3->5 stack2= 2->4->6 result= 1->2->3->4->5->6)
+ * The function inserts the second linked list into the first linked list
+ * @author s186333 Stig Bødtker Petersen
+ * @param first - the first linked list
+ * @param second - the second linked list to be merged into the first linked list
+ * @return the first linked list merged with the the second linked list
+ */
 struct card* interleave(struct card *first, struct card *second){
 
     for (int i = 0; i < 25; ++i) {
@@ -245,8 +284,17 @@ struct card* interleave(struct card *first, struct card *second){
 
     return first;
 }
+/**
+ * function that performs the shuffle list function a random number of times, in order to create a pseudo random shuffled deck of cards
+ * @author s186333 Stig Bødtker Petersen
+ * @param head - the stack of nodes/cards
+ * @return the randomized stack of nodes/cards
+ */
 
 struct card* randomShuffle(struct card* head){
+
+    time_t t ;
+    srand((unsigned ) time(&t));
     //struct card *head = NULL;
     struct card *head1 = NULL;
     struct card *head2 = NULL;
@@ -264,7 +312,12 @@ struct card* randomShuffle(struct card* head){
     }
     return head;
 }
-
+/**
+ * function to split the linked list stack in two equal halves an merges them again in a interleaved manner
+ * @author s186333 Stig Bødtker Petersen
+ * @param stack - the linked list of nodes/cards that is to be shuffled
+ * @return the newly shuffled linked list
+ */
 /* first, split the list in half; second, shuffle the elements together. */
 struct card* shuffleList(card** stack){
     struct card *head = NULL;

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 #include "CardFunctions.h"
 
 char returnMsg[50] = "OK";
