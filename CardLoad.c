@@ -162,6 +162,11 @@ void splitList(struct card *head, struct card **head1_ref, struct card **head2_r
     slow_ptr->next = head;
 }
 
+/**
+ * Reads a .txt file and loads every line in the file into a linked list of cards
+ * @author Emil Nymark Trangeled - s195478 100%.
+ * @param stack, The linked list to bed written to.
+ */
 void cardsFromFile(card** stack){
     FILE *fp;
     char str[4];
@@ -187,6 +192,13 @@ void cardsFromFile(card** stack){
     fclose(fp);
 }
 
+/**
+ * Writes all cards from the given linked list into a file.
+ * @author Emil Nymark Trangeled - s195478 100%.
+ * @param cards, The linked list of cards
+ * @param filename, If the name is NULL it will make a file called cards.txt
+ *                  else it will name a file the given name including .txt at the end.
+ */
 void cardsToFile(struct card *cards, char* filename){
     FILE *fwrite;
     char* dFilename = "..\\cards.txt";

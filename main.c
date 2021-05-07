@@ -7,7 +7,13 @@
 char returnMsg[50] = "OK";
 
 void noParameterMsg(char *command);
-
+/**
+ * @author Emil Nymark Trangeled - s195478 80%, Stig Bødtker Petersen - s186333 10%,  Nicolai B. Kragh - s185205 10%.
+ * Creates the input command text and allows commands to be entered.
+ * If commands with no parameters are entered it will return a descriptive error message.
+ * If unknown commands are entered it will say so.
+ * @return void
+ */
 int main() {
     card * stack = NULL;
 
@@ -21,38 +27,9 @@ int main() {
         F[i] = NULL;
     }
 
-/*
-    cardsFromFile(&stack);
-
-    prepareShowStack(stack, 0);
-    printBoard();
-    // tømmer hver C[i] og genopretter en ny head pointer deri
-    for (size_t i = 0; i < 7; i++) {
-        C[i] = emptyStack(C[i]);
-    }
-
-    prepareShowStack(stack, 1);
-    printBoard();
-    for (size_t i = 0; i < 7; i++) {
-        C[i] = emptyStack(C[i]);
-    }
-
-    dealToCStacks(stack);
-    printBoard();
-    cardsToFile(stack, NULL);
-    displayGame();
-
-    card* newCard = (card*)malloc(sizeof(card));
-
-    stack = NULL;
-    top(stack);
-	*/
-
-
 
     setbuf(stdout, 0);
-    //stack = (card*)(malloc(sizeof(card)));
-    //cardsFromFile(&stack);
+
     char tInput[inputSize] = "",lastCommand[inputSize] = "";
     char command[3]="",parameter[25]="";
     char *pTokens[2];
@@ -144,8 +121,6 @@ int main() {
                     strcpy(returnMsg, "OK - SAVED CURRENT CARDS TO FILE");
                     cardsToFile(stack, NULL);
 
-
-
                 } else {
                     noParameterMsg(command);
                     pTokens[1] = "";
@@ -192,6 +167,12 @@ int main() {
 
 }
 
+/**
+ * @author Emil Nymark Trangeled - s195478 100%.
+ * Creates a string for the parameters that does not contain any parameter
+ * and stores the error in returnMsg which is a global variable.
+ * @param command, The command that does not contain any parameters.
+ */
 void noParameterMsg(char *command){
     char str[100];
     strcat(str, "Command (");
