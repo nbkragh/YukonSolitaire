@@ -199,10 +199,15 @@ void splitList(struct card *head, struct card **head1_ref, struct card **head2_r
  * @author Emil Nymark Trangeled - s195478 100%.
  * @param stack, The linked list to bed written to.
  */
-void cardsFromFile(card** stack){
+void cardsFromFile(card** stack, char* filename){
     FILE *fp;
     char str[4];
-    char* filename = "..\\defaultDeck.txt";
+    char* dfilename = "..\\defaultDeck.txt";
+
+
+    if (filename[0] == '\0'){
+        filename = dfilename;
+    }
 
     fp = fopen(filename, "r");
     if (fp == NULL){
@@ -235,7 +240,7 @@ void cardsToFile(struct card *cards, char* filename){
     FILE *fwrite;
     char* dFilename = "..\\cards.txt";
 
-    if (filename == NULL){
+    if (filename[0] == '\0'){
         filename = dFilename;
     }
 

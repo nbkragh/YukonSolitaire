@@ -79,7 +79,9 @@ int main() {
                 //printf("LOADING CARDS FROM: %s\n\n", parameter);
                 strcpy(returnMsg, "OK - CARDS LOADED");
                 emptyDisplayColumns();
-                cardsFromFile(&stack);
+
+                cardsFromFile(&stack, parameter);
+
                 prepareShowStack(stack, 0);
             } else if (strcmp(command, "SW") == 0) {
                 // Checks if the command SW has a parameter entered, if it has it will return an error.
@@ -95,7 +97,7 @@ int main() {
                     pTokens[1] = "";
                 }
 
-            } else if (strcmp(command, "SL") == 0) {
+            } else if (strcmp(command, "SI") == 0) {
                 //printf("SPLITTING CARDS FROM: %s\n\n", parameter);
                 strcpy(returnMsg, "OK - CARD HAVE BEEN SPLIT");
                 shuffleList(&stack);
@@ -117,15 +119,9 @@ int main() {
                 }
 
             } else if (strcmp(command, "SD") == 0) {
-                if (strcmp(parameter, "") == 0) {
-                    //printf("\n\n");
                     strcpy(returnMsg, "OK - SAVED CURRENT CARDS TO FILE");
-                    cardsToFile(stack, NULL);
+                    cardsToFile(stack, parameter);
 
-                } else {
-                    noParameterMsg(command);
-                    pTokens[1] = "";
-                }
 
             } else if (strcmp(command, "P") == 0) {
                 if (strcmp(parameter, "") == 0) {

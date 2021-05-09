@@ -44,7 +44,7 @@ char play; // er programmet i Game-state eller ej?
 
 
 void LoadCard(char *, card**);
-void cardsFromFile(card**);
+void cardsFromFile(card**, char* filename);
 void top (card*);
 struct card* shuffleList(card**);
 struct card* randomShuffle(struct card* stack);
