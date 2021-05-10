@@ -32,7 +32,7 @@ int main() {
     setbuf(stdout, 0);
 
     char tInput[inputSize] = "",lastCommand[inputSize] = "";
-    char command[3]="",parameter[25]="";
+    char command[15]="",parameter[25]="";
     char *pTokens[2];
     int i, gameState = 0;
 
@@ -150,6 +150,11 @@ int main() {
                     noParameterMsg(command);
                     pTokens[1] = "";
                 }
+
+            } else if (command[0] == 'C' || command[0] == 'F') {
+
+
+                strcpy(returnMsg, "OK - MOVED CARD");
 
             } else {
                 strcpy(returnMsg, "Game is started");
