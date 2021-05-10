@@ -1,0 +1,24 @@
+fromStackToOther() tager imod en string med navnet på kortet der skal flyttes med (CARD), en pointer til stakken som kortet skal hentes fra ( FROM) og en pointer til stakken som kortet skal flyttes til (TO), og en string der angiver om FROM er en Coloumn eller en Foundation, og en string der angiver det samme for TO stakken.
+funktionen returnerer et negativt tal hvis der er fejl i kommandoen den eksekvere, ellers 0 hvis kommandoen er valid.
+
+Først bruges countNodes() funktionen til at få længden af FROM stakken.
+Længden bliver testet om den er større end 0, hvis ikke så returneres en fejlkode, FROM er tom.
+Pointeren til FROM stakken kopieres i fromCopy.
+
+Hvis string'en med navnet på kortet der skal flyttes er tom så sættes en pointer cardWithName til at pege på sidste kort i FROM stakken. Ellers køres en for-løkke der itererer det antal gange som FROM er lang. For hver iteration testes det om kopien af FROM pointeren peger på et kort der har samme navn som CARD, hvis den har, så sættes  cardWithName til at pege på det samme kort. Til sidst i iteration sættes fromCopy til at pege på næste kort i FROM stakken.
+
+Det testes så om CardWithName er blevet sat, hvis ikke så returnes en fejlkode, da kortet ikke findes i FROM stakken.
+
+Så testes det om FROM eller TO er en Foundation, hvis en af dem er, så testes det om cardWithName er det samme
+kort som det sidste kort i FROM, hvis ikke så returneres der en fejlkode, der må kun flyttes 1 kort til eller fra en Foundation.
+
+Hvis TO ikke er tom, så hvis TO er en Foundation testes det om værdien af cardWithName er 1 større end værdien af
+bunden af TO og om kuløren er den samme, ellers hvis TO er en Column, så testes det om værdien er 1 mindre
+og kuløren ikke er den samme. Hvis en af disse betingelser ikke opfyldes så returneres der en fejl kode, kortet 
+opfylder ikke kravene til blive lagt oven på TO stakken.
+
+Hvis der kun er 1 kort i FROM stakken, så tømmes denne ved at sætte pointeren til NULL, ellers så dobble linkes
+kortet under cardWithName til starten (nederste) af FROM, og hvis dette kort er vendt nedad, så vendes det opad.
+
+Hvis TO stakken er tom så sættes den til at være cardWithName, og den dobble linkes til sig selv.
+ellers så doble linkes cardWithName til øverste kort i To stakken, og øverste kort i FROM (kan være cardWithName) stakken dobble linkes til starten ( nederste) af TO stakken. Derefter returneres der 0, rykket var valid.

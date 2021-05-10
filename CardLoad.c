@@ -303,13 +303,19 @@ int fromStackToOther(char* name, card** from, card** to, char* fromType, char* t
 	if(countFrom == 0){
 		return -1; //ingen kort i from stack
 	}
-	for (size_t i = 0; i < countFrom; i++){
-		//finder kortet der skal flyttes fra "from" stakken
-		if(strcmp(fromCopy->name, name) == 0){
-			cardWithName = fromCopy;
+	if (name[0] == "\0"){ 
+		// hvis input ikkke indeholder et bestemt kort der skal flyttes fra, så flyt sidte kort i stakken
+		cardWithName = fromCopy->prev;
+	} else {
+		for (size_t i = 0; i < countFrom; i++){
+			//finder kortet der skal flyttes fra "from" stakken
+			if(strcmp(fromCopy->name, name) == 0){
+				cardWithName = fromCopy;
+			}
+			fromCopy = fromCopy->next;
 		}
-		fromCopy = fromCopy->next;
 	}
+	
 	fromCopy = fromCopy->prev; // gemmer sidste kort i stakken til senere
 	if(cardWithName == NULL){
 		return -2; //kort fandtes ikke i stakken 
