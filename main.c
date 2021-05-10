@@ -153,7 +153,36 @@ int main() {
 
             } else if (command[0] == 'C' || command[0] == 'F') {
 
+				char name[3] = "\000";
+				char fromIndex;
+				char toIndex;
+				char fromType =command[0];
+				char toType = command[strlen(command) - 2];
 
+
+				
+				if(fromType == 'C'){
+					fromIndex = command[1]-49;
+				}else{
+					fromIndex= command[1]-49;
+				}
+				if(toType == 'C'){
+					toIndex = (command[strlen(command) - 1])-49;
+				}else{
+					toIndex = (command[strlen(command) - 1])-49;
+				}
+				
+				if( command[2]  == ':'){
+					memcpy( name, &command[3], 2 );
+					strcpy(&name[2] , "\0");
+					
+				}
+				// printf("name : %s\n", name);
+				// printf("from : %s\n", from->prev->name);
+				// printf("to : %i\n", to);
+				// printf("fromType : %c\n", fromType);
+				// printf("toType : %c\n", toType);
+				printf("fromStackToOther() : %i" , fromStackToOther(name, fromIndex, toIndex , &fromType, &toType));
                 strcpy(returnMsg, "OK - MOVED CARD");
 
             } else {

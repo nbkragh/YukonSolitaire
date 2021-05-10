@@ -52,7 +52,7 @@ card* createCard(char*);
 void push(card **, card*);
 void cardsToFile(struct card *cards, char* filename);
 card* emptyStack(card* );
-int fromStackToOther(char*, card**, card**, char*, char*);
+int fromStackToOther(char*, char, char, char*, char*);
 int displayGame(char * tInput, char * lastCommand);
 void printBoard(void);
 void displayAllCards(char);

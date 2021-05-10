@@ -349,8 +349,20 @@ struct card* shuffleList(card** stack){
 
 }
 
-int fromStackToOther(char* name, card** from, card** to, char* fromType, char* toType){
-	
+int fromStackToOther(char* name, char fromIndex, char toIndex, char* fromType, char* toType){
+	card** from;
+	card** to; 
+	if(*fromType == 'C'){
+		from = &C[fromIndex];
+	}else{
+		from = &F[fromIndex];
+	}
+
+	if(*toType == 'C'){
+		to = &C[toIndex];
+	}else{
+		to = &F[toIndex];
+	}
 	char countFrom = countNodes(*from);
 	card* cardWithName = NULL;
 	card* fromCopy = *from;
@@ -358,7 +370,7 @@ int fromStackToOther(char* name, card** from, card** to, char* fromType, char* t
 	if(countFrom == 0){
 		return -1; //ingen kort i from stack
 	}
-	if (name[0] == "\0"){ 
+	if (name[0] == '\0' ){ 
 		// hvis input ikkke indeholder et bestemt kort der skal flyttes fra, så flyt sidte kort i stakken
 		cardWithName = fromCopy->prev;
 	} else {
@@ -375,7 +387,7 @@ int fromStackToOther(char* name, card** from, card** to, char* fromType, char* t
 	if(cardWithName == NULL){
 		return -2; //kort fandtes ikke i stakken 
 	}
-	if(strcmp(fromType , "F") == 0 || strcmp(toType , "F") == 0){
+	if(*fromType =='F' || *toType == 'F'){
 		if(cardWithName != (*from)->prev){
 			return -3; //kun øverste kort kan flyttes fra eller til en F[] stak
 		}
@@ -384,13 +396,13 @@ int fromStackToOther(char* name, card** from, card** to, char* fromType, char* t
 	char countTo = countNodes(*to);
 
 	if(countTo > 0){
-		if(strcmp(toType , "F") == 0 && (
+		if(*toType == 'F'  && (
 			cardWithName->value != ((*to)->prev->value)+1 ||
 			cardWithName->suit != (*to)->prev->suit) ){
 			return -4;  //kortet var ikke 1 større end toppen af F[] stakken 
 						//eller havde ikke samme kulør
 		}
-		if( strcmp(toType , "C") == 0 && 
+		if( *toType == 'C' && 
 			(cardWithName->value != ((*to)->prev->value)-1 ||
 			cardWithName->suit == ((*to)->prev->suit)) ){
 			return -5; 	//kortet var ikke 1 mindre end bunden af C[] stakken 
