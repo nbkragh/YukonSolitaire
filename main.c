@@ -177,11 +177,7 @@ int main() {
 					strcpy(&name[2] , "\0");
 					
 				}
-				// printf("name : %s\n", name);
-				// printf("from : %s\n", from->prev->name);
-				// printf("to : %i\n", to);
-				// printf("fromType : %c\n", fromType);
-				// printf("toType : %c\n", toType);
+
 				printf("fromStackToOther() : %i" , fromStackToOther(name, fromIndex, toIndex , &fromType, &toType));
                 strcpy(returnMsg, "OK - MOVED CARD");
 
