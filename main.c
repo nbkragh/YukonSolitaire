@@ -177,10 +177,12 @@ int main() {
 					strcpy(&name[2] , "\0");
 					
 				}
-
-				printf("fromStackToOther() : %i" , fromStackToOther(name, fromIndex, toIndex , &fromType, &toType));
-                strcpy(returnMsg, "OK - MOVED CARD");
-
+				
+				if(fromStackToOther(name, fromIndex, toIndex , &fromType, &toType) < 0 ){
+					strcpy(returnMsg, "MOVE NOT VALID");
+				}else{;
+					strcpy(returnMsg, "OK - MOVED CARD");
+				}
             } else {
                 strcpy(returnMsg, "Game is started");
             }
