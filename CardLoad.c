@@ -8,12 +8,11 @@
 #include <string.h>
 #include <ctype.h>
 #include <mmcobj.h>
+#include <time.h>
 
 //#define MAXCHAR 1000
 
 
- //card *head = NULL;
- //card *current = NULL;
 
 int valueFromCardName(char* name){
     switch (toupper(*name))
@@ -70,28 +69,6 @@ void push(card **start, card* inCard){
 
 
 
-//void push2(struct card **head_ref, char* input){
-//    struct card *ptr1 = (struct card *)malloc(sizeof(struct card));
-//    struct card *temp = *head_ref;
-//    ptr1->value = valueFromCardName(input);
-//    ptr1->suit = suitFromCardName(input);
-//    strcpy(ptr1->name, input);
-//    ptr1->shown = 1;
-//    ptr1->next = *head_ref;
-//
-//    /* If linked list is not NULL then set the next of
-//      last node */
-//    if(*head_ref != NULL)
-//    {
-//        while(temp->next != *head_ref)
-//            temp = temp->next;
-//        temp->next = ptr1;
-//    }
-//    else
-//        ptr1->next = ptr1; /*For the first node */
-//
-//    *head_ref = ptr1;
-//}
 int countNodes(struct card* head)
 {
     struct card* temp = head;
@@ -252,46 +229,54 @@ struct card* interleave(struct card *first, struct card *second){
     second->prev = first;
     second->next = first->next;
     first->next = second;
-
     first = first->next->next;
 
     return first;
 }
 
-/* first, split the list in half; second, shuffle the elements together. */
-void shuffleList(card** stack){
-    if (* stack == NULL) return;
+struct card* randomShuffle(struct card* stack){
     struct card *head = NULL;
     struct card *head1 = NULL;
     struct card *head2 = NULL;
 
-    printf("\n");
-    printf("before: \n");
-    printList(*stack);
-    printf("\n\n");
+    int randomNum = rand() % 10000 + 3;
+
+    // test a new random funktion
+    for (int i = 0; i < 3*randomNum; ++i) {
+        randomNum = rand() % 10000 + 10;
+        splitList(head, &head1, &head2);
+        head = interleave(head1,head2);
+        for (int j = 0; j < randomNum; ++j) {
+            head = head->next;
+        }
+    }
+    return head;
+}
+
+/* first, split the list in half; second, shuffle the elements together. */
+struct card* shuffleList(card** stack){
+    struct card *head = NULL;
+    struct card *head1 = NULL;
+    struct card *head2 = NULL;
+//    printf("\n");
+//    printf("before: \n");
+//    printList(*stack);
+//    printf("\n\n");
     splitList(*stack, &head1, &head2);
 
-    printf("first half\n");
-    printList(head1);
-    printf("\n\n");
-    printf("second half\n");
-    printList(head2);
+//    printf("first half\n");
+//    printList(head1);
+//    printf("\n\n");
+//    printf("second half\n");
+//    printList(head2);
 
-    //head = merge(head1, (struct card **) head2);
-    //merge(head2,&head1);
     head = interleave(head1,head2);
-    printf("\n\n");
-    printf("merged \n");
-    printList(head);
+//    printf("\n\n");
+//    printf("merged \n");
+//    printList(head);
 
-    //split((struct card *) stack, &stack1, &stack2);
+    return head;
 
-//    struct card half = splitList((struct card *) head, &head1, &head2);
-//    interleave(*head, half);
-//    *head = half;
-
-
-    //printList((struct card *) stack);
 }
 
 int fromStackToOther(char* name, card** from, card** to, char* fromType, char* toType){
