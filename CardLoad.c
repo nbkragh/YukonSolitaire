@@ -352,17 +352,8 @@ struct card* shuffleList(card** stack){
 int fromStackToOther(char* name, char fromIndex, char toIndex, char* fromType, char* toType){
 	card** from;
 	card** to; 
-	if(*fromType == 'C'){
-		from = &C[fromIndex];
-	}else{
-		from = &F[fromIndex];
-	}
-
-	if(*toType == 'C'){
-		to = &C[toIndex];
-	}else{
-		to = &F[toIndex];
-	}
+	if(*fromType == 'C'){ from = &C[fromIndex]; }else{ from = &F[fromIndex];}
+	if(*toType == 'C'){ to = &C[toIndex]; }else{ to = &F[toIndex]; }
 	char countFrom = countNodes(*from);
 	card* cardWithName = NULL;
 	card* fromCopy = *from;
@@ -384,6 +375,7 @@ int fromStackToOther(char* name, char fromIndex, char toIndex, char* fromType, c
 	}
 	
 	fromCopy = fromCopy->prev; // gemmer sidste kort i stakken til senere
+	
 	if(cardWithName == NULL){
 		return -2; //kort fandtes ikke i stakken 
 	}
@@ -408,31 +400,24 @@ int fromStackToOther(char* name, char fromIndex, char toIndex, char* fromType, c
 			return -5; 	//kortet var ikke 1 mindre end bunden af C[] stakken 
 						//eller havde samme kulør
 		}
-
 	}
-	
-// ALT TJEKKET - READY TO GO
 
+// ALT TJEKKET - READY TO GO
 	if(countFrom == 1){
 		*from = NULL; //tømmer stakken
 	}else{
 		cardWithName->prev->next = *from; // binder from stakken sammen efter fjernet et kort
-		
 		(*from)->prev= cardWithName->prev;
 		if((*from)->prev->shown == 0) (*from)->prev->shown = 1; 
 	}
-
 	if( countTo == 0){
 		*to = cardWithName;
 		(*to)->prev = (*to)->next = *to;
 	}else{
 		cardWithName->prev = (*to)->prev; //linker nye kort til "to" stakken
 		fromCopy->next = *to;
-		
 		(*to)->prev->next = cardWithName; // linker "to" stakken til nye kort
 		(*to)->prev = fromCopy;
-		
-	
 	}
 	return 0;
 }
