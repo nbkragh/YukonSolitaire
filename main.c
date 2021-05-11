@@ -6,6 +6,7 @@
 #include "CardFunctions.h"
 
 char returnMsg[50] = "OK";
+int shown = 0;
 
 void noParameterMsg(char *command);
 /**
@@ -91,6 +92,7 @@ int main() {
                     strcpy(returnMsg, "OK - SHOWING CARDS");
 
                     turnAllCards();
+                    shown = !shown;
                 } else {
                     //strcpy(returnMsg, "Command (SW) does not have a parameter!");
                     noParameterMsg(command);
@@ -102,7 +104,7 @@ int main() {
                 strcpy(returnMsg, "OK - CARD HAVE BEEN SPLIT");
                 shuffleList(&stack);
                 emptyDisplayColumns();
-                prepareShowStack(stack, 0);
+                prepareShowStack(stack, shown);
 
             } else if (strcmp(command, "SR") == 0) {
                 if (strcmp(parameter, "") == 0) {
@@ -111,7 +113,7 @@ int main() {
                     randomShuffle(stack);
                     emptyDisplayColumns();
 
-                    prepareShowStack(stack, 0);
+                    prepareShowStack(stack, shown);
 
                 } else {
                     noParameterMsg(command);
