@@ -6,6 +6,7 @@
 #include "CardFunctions.h"
 
 char returnMsg[50] = "OK";
+int shown = 0;
 
 void noParameterMsg(char *command);
 /**
@@ -77,12 +78,14 @@ int main() {
             // Looks through all the commands and executes the commands accordingly
             if (strcmp(command, "LD") == 0) {
                 //printf("LOADING CARDS FROM: %s\n\n", parameter);
-                strcpy(returnMsg, "OK - CARDS LOADED");
-                emptyDisplayColumns();
 
-                cardsFromFile(&stack, parameter);
+                    emptyDisplayColumns();
+                    cardsFromFile(&stack, parameter);
 
-                prepareShowStack(stack, 0);
+                    prepareShowStack(stack, 0);
+                    strcpy(returnMsg, "OK - CARDS LOADED");
+
+
             } else if (strcmp(command, "SW") == 0) {
                 // Checks if the command SW has a parameter entered, if it has it will return an error.
                 // If not it will run the command.
@@ -91,6 +94,7 @@ int main() {
                     strcpy(returnMsg, "OK - SHOWING CARDS");
 
                     turnAllCards();
+                    shown = !shown;
                 } else {
                     //strcpy(returnMsg, "Command (SW) does not have a parameter!");
                     noParameterMsg(command);
@@ -102,7 +106,7 @@ int main() {
                 strcpy(returnMsg, "OK - CARD HAVE BEEN SPLIT");
                 shuffleList(&stack);
                 emptyDisplayColumns();
-                prepareShowStack(stack, 0);
+                prepareShowStack(stack, shown);
 
             } else if (strcmp(command, "SR") == 0) {
                 if (strcmp(parameter, "") == 0) {
@@ -111,7 +115,7 @@ int main() {
                     randomShuffle(stack);
                     emptyDisplayColumns();
 
-                    prepareShowStack(stack, 0);
+                    prepareShowStack(stack, shown);
 
                 } else {
                     noParameterMsg(command);
