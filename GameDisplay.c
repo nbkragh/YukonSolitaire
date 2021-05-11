@@ -137,6 +137,10 @@ void prepareShowStack(card *s, char shown) {
     }
 }
 
+/**
+ * Turns all the cards on the board face up or face down, depending on their previous state.
+ * @author Emil Nymark Trangeled - s195478
+ */
 void turnAllCards(){
     for (size_t i = 0; i < 7; i++) {
         int amount = countNodes(C[i]);
