@@ -1,8 +1,13 @@
 #include "CardFunctions.h"
 #include <stdio.h>
 #include <stdlib.h>
+/**
+ * an automatic test of fromStackToOther() upholds the gamerules for card moves.
+ * @author s185205 Nicolai B. Kragh
+ * @return void
+ */
+
 int main() {
- // populate C[]
     // populate F[]
     for (size_t i = 0; i < 4; i++) {
         F[i] = NULL;

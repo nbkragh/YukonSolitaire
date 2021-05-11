@@ -381,8 +381,16 @@ struct card* shuffleList(card** stack){
 int fromStackToOther(char* name, char fromIndex, char toIndex, char* fromType, char* toType){
 	card** from;
 	card** to; 
-	if(*fromType == 'C'){ from = &C[fromIndex]; }else{ from = &F[fromIndex];}
-	if(*toType == 'C'){ to = &C[toIndex]; }else{ to = &F[toIndex]; }
+	if(*fromType == 'C'){ 
+		from = &C[fromIndex]; 
+	}else{ 
+		from = &F[fromIndex];
+	}
+	if(*toType == 'C'){ 
+		to = &C[toIndex]; 
+	}else{ 
+		to = &F[toIndex]; 
+	}
 	char countFrom = countNodes(*from);
 	card* cardWithName = NULL;
 	card* fromCopy = *from;
