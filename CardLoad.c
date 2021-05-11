@@ -213,7 +213,7 @@ void cardsFromFile(card** stack, char* filename){
         filename = "defaultDeck.txt"; // prøv at kigge efter filen i samme mappe stedet for
         fRead = fopen(filename, "r");
         if (fRead == NULL){
-            printf("Could not open file %s\n default cards loaded", filename);
+            printf("Could not open file, default cards loaded.\n");
             filename = dfilename;
             fRead = fopen(filename, "r");
         }
