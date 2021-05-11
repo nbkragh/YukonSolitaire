@@ -1,6 +1,6 @@
 //
 // Created by Emil Trangeled on 15-04-2021.
-// Edit Nicolai B. Kragh
+// Edit Nicolai B. Kragh, Stig Bødtker Petersen
 
 #ifndef YUKONSOLITAIRE_CARDFUNCTIONS_H
 #define YUKONSOLITAIRE_CARDFUNCTIONS_H
@@ -55,7 +55,6 @@ card* emptyStack(card* );
 int fromStackToOther(char*, char, char, char*, char*);
 int displayGame(char * tInput, char * lastCommand);
 void printBoard(void);
-void displayAllCards(char);
 void dealCardsToGame(card* );
 void prepareShowStack(card *s, char shown);
 void turnAllCards();

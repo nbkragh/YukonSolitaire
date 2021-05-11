@@ -13,7 +13,12 @@
 //#define MAXCHAR 1000
 
 
-
+/**
+ * gets the int value of the ASCII char of a cards value
+ * @author s185205 Nicolai B. Kragh
+ * @param name - string with name of card 
+ * @return int of the cards value
+ */
 int valueFromCardName(char* name){
     switch (toupper(*name))
     {
@@ -36,12 +41,22 @@ int valueFromCardName(char* name){
         break;
     }
 }
-
+/**
+ * gets the char of a cards suit ("D" "H" "C" "S")
+ * @author s185205 Nicolai B. Kragh
+ * @param name - string with name of card 
+ * @return the second char in the name string
+ */
 char suitFromCardName(char* name){
     return *(name+1);
 }
-card* createCard(char* input){ // create nyt kort fra string
-    
+/**
+ * creates a new card , and gives it default values, and makes it double linked to itself
+ * @author s185205 Nicolai B. Kragh
+ * @param input - string with the name of the card 
+ * @return returner - a pointer to the new card
+ */
+card* createCard(char* input){ 
     struct card *ptr1 = (card *)malloc(sizeof(card));
     ptr1->value = valueFromCardName(input);
     ptr1->suit = suitFromCardName(input);
@@ -93,20 +108,22 @@ int countNodes(struct card* head)
 
     return result;
 }
-// returnerer et ny head til den tømte stack
-card* emptyStack(card* stack){
-   card* nextS;
-   char count = countNodes(stack);
+/**
+ * runs through all elements of the list and frees the memory they point at.
+ * @author s185205 Nicolai B. Kragh
+ * @param list - pointer to the head of the list
+ * @return returner - a pointer to a head of a new empty list
+ */
+card* emptyStack(card* list){
+   char count = countNodes(list);
    for (size_t i = 0; i < count; i++)
    {
-	   nextS = stack->next;
-	   free(stack);
-	   stack = nextS;
+	   list = list->next;
+	   free(list);
    }
    card* returner = (card *)(malloc(sizeof(card)));
    returner->next = returner->prev = NULL;
    return returner;
-
 }
 /**
  * Function to print nodes/card name in a given Circular linked list
@@ -348,7 +365,16 @@ struct card* shuffleList(card** stack){
     return head;
 
 }
-
+/**
+ * checks if a Game Move is valid, and if so executes it.
+ * @author s185205 Nicolai B. Kragh
+ * @param name - string with the name of the card, can be empty
+ * @param fromIndex - index in the C or F Array where the From list is found 
+ * @param toIndex - index in the C or F Array where the To list is found
+ * @param fromType - string that indicates if From list is a Column or a Foundation
+ * @param fromType - string that indicates if To list is a Column or a Foundation
+ * @return int - 0 if the move is valid and it has been executed, a negative number if not.
+ */
 int fromStackToOther(char* name, char fromIndex, char toIndex, char* fromType, char* toType){
 	card** from;
 	card** to; 
@@ -358,55 +384,56 @@ int fromStackToOther(char* name, char fromIndex, char toIndex, char* fromType, c
 	card* cardWithName = NULL;
 	card* fromCopy = *from;
 
+// FINDS THE CARD IN FROM LIST AND VALIDATE
 	if(countFrom == 0){
-		return -1; //ingen kort i from stack
+		return -1; //no cards in the From list
 	}
 	if (name[0] == '\0' ){ 
-		// hvis input ikkke indeholder et bestemt kort der skal flyttes fra, så flyt sidte kort i stakken
+		// if name string parameter is empty then set last card in From list to be moved
 		cardWithName = fromCopy->prev;
-	} else {
+	} else {//if name string parameter is not empty then find that card in From list
 		for (size_t i = 0; i < countFrom; i++){
-			//finder kortet der skal flyttes fra "from" stakken
+			
 			if(strcmp(fromCopy->name, name) == 0){
 				cardWithName = fromCopy;
 			}
 			fromCopy = fromCopy->next;
 		}
 	}
-	
-	fromCopy = fromCopy->prev; // gemmer sidste kort i stakken til senere
+	fromCopy = fromCopy->prev; // save last card in From list for later
 	
 	if(cardWithName == NULL){
-		return -2; //kort fandtes ikke i stakken 
+		return -2; //the card wasnt found in From list
 	}
 	if(*fromType =='F' || *toType == 'F'){
 		if(cardWithName != (*from)->prev){
-			return -3; //kun øverste kort kan flyttes fra eller til en F[] stak
+			return -3; //only the last card of a list can be moved to or from a Foundation list
 		}
 	}
 	
+// VALIDATE IF CARD CAN BE MOVED TO THE TO LIST
 	char countTo = countNodes(*to);
 
 	if(countTo > 0){
 		if(*toType == 'F'  && (
 			cardWithName->value != ((*to)->prev->value)+1 ||
 			cardWithName->suit != (*to)->prev->suit) ){
-			return -4;  //kortet var ikke 1 større end toppen af F[] stakken 
-						//eller havde ikke samme kulør
+			return -4;  //the card wasnt one 1 larger than the last card of the Foundation list
+						//or didnt have the same suit
 		}
 		if( *toType == 'C' && 
 			(cardWithName->value != ((*to)->prev->value)-1 ||
 			cardWithName->suit == ((*to)->prev->suit)) ){
-			return -5; 	//kortet var ikke 1 mindre end bunden af C[] stakken 
-						//eller havde samme kulør
+			return -5; 	//the card wasnt one 1 smaller than the last card of the Column list
+						//or had the same suit
 		}
 	}
 
-// ALT TJEKKET - READY TO GO
+// ALL CHECKED - READY TO GO
 	if(countFrom == 1){
-		*from = NULL; //tømmer stakken
+		*from = NULL; //Empties the the From list if it only had one card prior to the move
 	}else{
-		cardWithName->prev->next = *from; // binder from stakken sammen efter fjernet et kort
+		cardWithName->prev->next = *from; // double links the new end of the From list to its head
 		(*from)->prev= cardWithName->prev;
 		if((*from)->prev->shown == 0) (*from)->prev->shown = 1; 
 	}
@@ -414,9 +441,9 @@ int fromStackToOther(char* name, char fromIndex, char toIndex, char* fromType, c
 		*to = cardWithName;
 		(*to)->prev = (*to)->next = *to;
 	}else{
-		cardWithName->prev = (*to)->prev; //linker nye kort til "to" stakken
+		cardWithName->prev = (*to)->prev; //inserts the card (and any trailing cards) into the To list
 		fromCopy->next = *to;
-		(*to)->prev->next = cardWithName; // linker "to" stakken til nye kort
+		(*to)->prev->next = cardWithName; 
 		(*to)->prev = fromCopy;
 	}
 	return 0;
