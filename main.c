@@ -78,12 +78,14 @@ int main() {
             // Looks through all the commands and executes the commands accordingly
             if (strcmp(command, "LD") == 0) {
                 //printf("LOADING CARDS FROM: %s\n\n", parameter);
-                strcpy(returnMsg, "OK - CARDS LOADED");
-                emptyDisplayColumns();
 
-                cardsFromFile(&stack, parameter);
+                    emptyDisplayColumns();
+                    cardsFromFile(&stack, parameter);
 
-                prepareShowStack(stack, 0);
+                    prepareShowStack(stack, 0);
+                    strcpy(returnMsg, "OK - CARDS LOADED");
+
+
             } else if (strcmp(command, "SW") == 0) {
                 // Checks if the command SW has a parameter entered, if it has it will return an error.
                 // If not it will run the command.

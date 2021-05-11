@@ -200,33 +200,36 @@ void splitList(struct card *head, struct card **head1_ref, struct card **head2_r
  * @param stack, The linked list to bed written to.
  */
 void cardsFromFile(card** stack, char* filename){
-    FILE *fp;
+    FILE *fRead;
     char str[4];
     char* dfilename = "..\\defaultDeck.txt";
-
 
     if (filename[0] == '\0'){
         filename = dfilename;
     }
 
-    fp = fopen(filename, "r");
-    if (fp == NULL){
+    fRead = fopen(filename, "r");
+    if (fRead == NULL){
         filename = "defaultDeck.txt"; // prøv at kigge efter filen i samme mappe stedet for
-        fp = fopen(filename, "r");
-        if (fp == NULL){
-            printf("Could not open file %s\n", filename);
+        fRead = fopen(filename, "r");
+        if (fRead == NULL){
+            printf("Could not open file %s\n default cards loaded", filename);
+            filename = dfilename;
+            fRead = fopen(filename, "r");
         }
     }
 
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 13; ++j) {
-            if (fgets(str, 4, fp) != NULL){
-                str[strlen(str)-1] = '\0';
-                push(stack,createCard(str));
+    if (fRead) {
+        for (int i = 0; i < 52; ++i) {
+            if (fgets(str, 4, fRead) != NULL) {
+                str[strlen(str) - 1] = '\0';
+                push(stack, createCard(str));
             }
         }
+    } else {
+        printf("Could not open file %s\n", filename);
     }
-    fclose(fp);
+    fclose(fRead);
 }
 
 /**
