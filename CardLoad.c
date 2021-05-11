@@ -258,7 +258,7 @@ void cardsFromFile(card** stack, char* filename){
  */
 void cardsToFile(struct card *cards, char* filename){
     FILE *fwrite;
-    char* dFilename = "..\\cards.txt";
+    char* dFilename = "cards.txt";
 
     if (filename[0] == '\0'){
         filename = dFilename;
